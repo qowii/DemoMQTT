@@ -25,7 +25,6 @@
 /* Alice Libraries */
 #include <AliceDefaultConfig.h>
 //#include <AliceAnimLedEffect.h>
-#include <version.h>
 #include <AliceWebSocketServer.h>
 #include <AliceWiFi.h>
 
