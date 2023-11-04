@@ -117,6 +117,7 @@ void resetRfidHex(void)
   rfidUnlock();
 }
 
+#if 0
 void setRfidHex(oracle_rfid_rc522_uuid_t *new_uuid)
 {
   char *uuid_str = NULL;
@@ -128,6 +129,7 @@ void setRfidHex(oracle_rfid_rc522_uuid_t *new_uuid)
   rfid_is_valid = true;
   rfidUnlock();
 }
+#endif
 
 static void rfidContextInit(void)
 {

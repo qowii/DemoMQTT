@@ -1,5 +1,5 @@
-#include <SPI.h>//https://www.arduino.cc/en/reference/SPI
-#include <MFRC522.h>//https://github.com/miguelbalboa/rfid
+#include <SPI.h>            //https://www.arduino.cc/en/reference/SPI
+#include <MFRC522.h>        //https://github.com/miguelbalboa/rfid
 #include <ArduinoJson.h>
 #include <WebSerialLite.h>
 
