@@ -21,7 +21,7 @@
 #include <FastLED.h>
 #include <uptime_formatter.h>
 
-//#include "oracle_rfid_leds.h"
+#include "oracle_rfid_leds.h"
 #include "oracle_rfid_rc522.h"
 
 /* Alice Libraries */
