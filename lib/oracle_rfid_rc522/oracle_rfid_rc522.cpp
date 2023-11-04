@@ -33,7 +33,7 @@ bool oracle_rfid_rc522_read(oracle_rfid_rc522_uuid_t uuid)
     }
 
     for (int i = 0; i < oracle_rfid_rc522.uid.size; i++) {
-        uuid.uuid[i] = rfid.uid.uidByte[i];
+        uuid.uuid[i] = oracle_rfid_rc522.uid.uidByte[i];
     }
     uuid.size = oracle_rfid_rc522.uid.size;
 
@@ -72,7 +72,7 @@ void oracle_rfid_rc522_dump_config(oracle_rfid_rc522_config_t *config)
     WebSerial.println(buffer);
 }
 
-int oracle_rfid_rc522_init(oracle_rfid_rc522_config_t *config)
+void oracle_rfid_rc522_init(oracle_rfid_rc522_config_t *config)
 {
     Serial.println("Setup RFID BEGIN");
     WebSerial.println("Setup RFID BEGIN");

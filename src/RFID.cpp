@@ -105,7 +105,7 @@ int RfidIsEmpty(void)
 {
   char uuid_empty_str[64];
   char *uuid_str = __rfid_context.options.uuid;
-  //oracle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_empty_str, 16);
+  oracle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_empty_str, 16);
   return !strncmp(__rfid_context.options.uuid, uuid_empty_str, 16);
 }
 
@@ -114,13 +114,12 @@ void resetRfidHex(void)
   char *uuid_str = NULL;
   rfidLock();
   uuid_str = __rfid_context.options.uuid;
-  //racle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_str, 16);
-  //oracle_rfid_leds_turnoff();
+  oracle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_str, 16);
+  oracle_rfid_leds_turnoff();
   rfid_is_valid = false;
   rfidUnlock();
 }
 
-#if 0
 void setRfidHex(oracle_rfid_rc522_uuid_t *new_uuid)
 {
   char *uuid_str = NULL;
@@ -128,11 +127,10 @@ void setRfidHex(oracle_rfid_rc522_uuid_t *new_uuid)
   rfidLock();
   uuid_str = __rfid_context.options.uuid;
   oracle_rfid_rc522_copy_uuid(new_uuid, __rfid_context.options.uuid, 16);
-  //oracle_rfid_leds_change_color(CRGB::Blue);
+  oracle_rfid_leds_change_color(CRGB::Blue);
   rfid_is_valid = true;
   rfidUnlock();
 }
-#endif
 
 static void rfidContextInit(void)
 {
@@ -141,7 +139,7 @@ static void rfidContextInit(void)
   __rfid_context.state.error = RFID_ERROR_TYPE_OK;
   __rfid_context.state.action = RFID_ACTION_TYPE_POLL;
   __rfid_context.state.status = RFID_STATUS_TYPE_ACTIVE;
-  //oracle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_str, 16);
+  oracle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_str, 16);
   __rfid_context.mutex = xSemaphoreCreateMutex();
 }
 
@@ -231,15 +229,15 @@ void setup(void)
 
   rfidContextInit();
   
-  //oracle_rfid_leds_init();
-  //oracle_rfid_leds_change_color(CRGB::Red);
+  oracle_rfid_leds_init();
+  oracle_rfid_leds_change_color(CRGB::Red);
 
   /* Turn on Wifi */
   Serial.println("Starting Alice WiFi");
   Serial.println();
   AliceWiFiStart();
 
-  //oracle_rfid_leds_change_color(CRGB::Blue);
+  oracle_rfid_leds_change_color(CRGB::Blue);
   AliceWiFiWaitConnectStatus();
   
   Serial.println("Starting Alice WebSocket");
@@ -251,7 +249,7 @@ void setup(void)
   Serial.println("Setup network DONE");
   WebSerial.println("Setup network DONE");
 
-  //oracle_rfid_leds_change_color(CRGB::Green);
+  oracle_rfid_leds_change_color(CRGB::Green);
   
   Serial.println("Upload :: Wait 15 seconds for binary upload");
   WebSerial.println("Wait 15 seconds for binary upload");
@@ -262,11 +260,11 @@ void setup(void)
   aliceDumpBinaryInfo(true);
   delay(1000); /* Wait for WiFi to be ready */
 
-  //oracle_rfid_rc522_config_t rfid_rc522_config; // = ORACLE_RFID_RC522_CONFIG_DEFAULT();
-  //oracle_rfid_rc522_dump_config(&rfid_rc522_config);
-  //oracle_rfid_rc522_init(&rfid_rc522_config);
+  oracle_rfid_rc522_config_t rfid_rc522_config; // = ORACLE_RFID_RC522_CONFIG_DEFAULT();
+  oracle_rfid_rc522_dump_config(&rfid_rc522_config);
+  oracle_rfid_rc522_init(&rfid_rc522_config);
 
-  //oracle_rfid_leds_turnoff();
+  oracle_rfid_leds_turnoff();
 }
 
 static void processAction(void)
@@ -290,16 +288,16 @@ void loop(void)
   EVERY_N_MILLISECONDS(ALICE_ESP32_CONFIG_DELAY) {
     websocket->cleanupClients();
     if (!AliceWiFiCheckConnectStatus()) {
-      //oracle_rfid_leds_change_color(CRGB::Red);
+      oracle_rfid_leds_change_color(CRGB::Red);
     } 
     else 
     {
       processAction();
       
       if (RfidIsEmpty()) {
-        //oracle_rfid_leds_turnoff();        
+        oracle_rfid_leds_turnoff();        
       } else {
-        //oracle_rfid_leds_change_color(CRGB::Blue);
+        oracle_rfid_leds_change_color(CRGB::Blue);
       }
     }
   }
