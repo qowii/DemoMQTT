@@ -21,12 +21,11 @@
 #include "oracle_rfid_leds.h"
 #include "oracle_rfid_rc522.h"
 
-
 /* Alice Libraries */
 #include <AliceDefaultConfig.h>
-//#include <AliceAnimLedEffect.h>
 #include <AliceWebSocketServer.h>
 #include <AliceWiFi.h>
+#include <version.h>
 
 typedef enum rfid_action_type {
   RFID_ACTION_TYPE_INVALID = 0,
