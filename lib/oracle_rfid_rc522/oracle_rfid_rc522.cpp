@@ -33,8 +33,9 @@ bool oracle_rfid_rc522_read(oracle_rfid_rc522_uuid_t uuid)
     }
 
     for (int i = 0; i < oracle_rfid_rc522.uid.size; i++) {
-        uuid[i] = rfid.uid.uidByte[i];
+        uuid.uuid[i] = rfid.uid.uidByte[i];
     }
+    uuid.size = oracle_rfid_rc522.uid.size;
 
     // Halt PICC
     oracle_rfid_rc522.PICC_HaltA();
