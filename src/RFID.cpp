@@ -22,6 +22,7 @@
 #include <uptime_formatter.h>
 
 #include "oracle_rfid_leds.h"
+#include "oracle_rfid_mqtt.h"
 #include "oracle_rfid_rc522.h"
 
 /* Alice Libraries */
@@ -192,30 +193,6 @@ static void updateCurrentState(JsonDocument& jsonRequest)
   }
 }
 
-void handleWebSocketMessage(JsonDocument& jsonRequest)
-{
-  JsonObject response;
-  rfid_context_t current_ctx;
-
-  updateCurrentState(jsonRequest);
-
-  rfidLock();
-  memcpy(&current_ctx, &__rfid_context, sizeof(rfid_context_t));
-  rfidUnlock();
-
-  /* Generic data */
-  response = jsonRequest.to<JsonObject>(); /* Get empty document */
-  response["status"] = rfidStatusGetName(current_ctx.state.status);
-  response["action"] = rfidActionGetName(current_ctx.state.action);
-  response["error"]  = rfidErrorGetName(current_ctx.state.error);
-
-  /* options */
-  response.createNestedObject("options");
-  response["options"]["UUID"] = current_ctx.options.uuid; 
-
-  resetRfidHex();
-}
-
 void setup(void)
 {
   char buffer[256];
@@ -242,7 +219,6 @@ void setup(void)
   
   Serial.println("Starting Alice WebSocket");
   websocket = new AliceWebSocketServer(ALICE_SERVER_CONFIG_PORT);
-  websocket->SetHandleMessageCallback(handleWebSocketMessage);
   websocket->Run();
   delay(1000);
 
@@ -267,18 +243,6 @@ void setup(void)
   oracle_rfid_leds_turnoff();
 }
 
-static void processAction(void)
-{ 
-#if 0
-  oracle_rfid_rc522_uuid_t new_uuid;
-  
-  if (!oracle_rfid_rc522_read(&new_uuid))
-    return;
-  
-  setRfidHex(&new_uuid);
-#endif
-}
-
 void loop(void)
 {
   EVERY_N_SECONDS(60) {
@@ -286,19 +250,23 @@ void loop(void)
   }
 
   EVERY_N_MILLISECONDS(ALICE_ESP32_CONFIG_DELAY) {
+    char uuid_str[16];
+    oracle_rfid_rc522_uuid_t new_uuid;
     websocket->cleanupClients();
+    
     if (!AliceWiFiCheckConnectStatus()) {
       oracle_rfid_leds_change_color(CRGB::Red);
-    } 
-    else 
-    {
-      processAction();
-      
-      if (RfidIsEmpty()) {
-        oracle_rfid_leds_turnoff();        
-      } else {
-        oracle_rfid_leds_change_color(CRGB::Blue);
-      }
+      return;
     }
+
+    if (!oracle_rfid_rc522_read(&new_uuid)) {
+      return;
+    }
+
+    /* uuid become byte array */
+    oracle_rfid_leds_change_color(CRGB::Blue);
+    oracle_rfid_rc522_copy_uuid(&new_uuid, uuid_str, 16);
+    oracle_screen_mqtt_publish_uuid(uuid_str);
   }
+
 }
