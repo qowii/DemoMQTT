@@ -258,7 +258,7 @@ void setup(void)
   aliceDumpBinaryInfo(true);
   delay(1000); /* Wait for WiFi to be ready */
 
-  oracle_rfid_rc522_config_t rfid_rc522_config = ORACLE_RFID_RC522_CONFIG_DEFAULT();
+  oracle_rfid_rc522_config_t rfid_rc522_config; // = ORACLE_RFID_RC522_CONFIG_DEFAULT();
   oracle_rfid_rc522_dump_config(&rfid_rc522_config);
   //oracle_rfid_rc522_init(&rfid_rc522_config);
 

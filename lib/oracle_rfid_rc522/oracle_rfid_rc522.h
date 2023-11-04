@@ -17,6 +17,7 @@
 #define SDA_PIN       5
 #define RST_PIN       22
 
+#if 0
 #define ORACLE_RFID_RC522_CONFIG_DEFAULT() { \
     .enable_spi = 1,\
     .sck_pin = SCK_PIN,\
@@ -25,6 +26,7 @@
     .sda_pin = SDA_PIN,\
     .rst_pin = RST_PIN\
 }
+#endif
 
 typedef struct oracle_rfid_rc522_config_s {
     uint8_t enable_spi;
