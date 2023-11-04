@@ -18,7 +18,7 @@
 #define RST_PIN       22
 
 #if 0
-#define ORACLE_RFID_RC522_CONFIG_DEFAULT() { \
+#define ORACLE_RFID_RC522_CONFIG_DEFAULT() {\
     .enable_spi = 1,\
     .sck_pin = SCK_PIN,\
     .miso_pin = MISO_PIN,\
@@ -49,7 +49,6 @@ bool oracle_rfid_rc522_read(oracle_rfid_rc522_uuid_t *uuid);
 void oracle_rfid_rc522_init(oracle_rfid_rc522_config_t *config);
 void oracle_rfid_rc522_dump_config(oracle_rfid_rc522_config_t *config);
 void oracle_rfid_rc522_dump_fwconfig(void);
-
 void oracle_rfid_rc522_copy_uuid(oracle_rfid_rc522_uuid_t *uuid,
                                  char *buffer, uint8_t buffer_size);
 

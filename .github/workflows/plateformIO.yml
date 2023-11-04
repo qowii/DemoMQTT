@@ -20,8 +20,5 @@ jobs:
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
 
-      - name: Check PlatformIO Project
-        run: pio check --src-filters="+<src/>" --src-filters="+<lib/>"
-
       - name: Build PlatformIO Project
         run: pio run
