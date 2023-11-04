@@ -12,7 +12,10 @@ oracle_rfid_rc522_uuid_t oracle_rfid_rc522_empty_uuid = {
     .uuid = {0, 0, 0, 0}, .size = 4
 };
 
-bool oracle_rfid_rc522_read(oracle_rfid_rc522_uuid_t uuid)
+/// @brief 
+/// @param uuid 
+/// @return 
+bool oracle_rfid_rc522_read(oracle_rfid_rc522_uuid_t *uuid)
 {
     // Look for new 1 cards
     if (!oracle_rfid_rc522.PICC_IsNewCardPresent()) {
@@ -33,9 +36,9 @@ bool oracle_rfid_rc522_read(oracle_rfid_rc522_uuid_t uuid)
     }
 
     for (int i = 0; i < oracle_rfid_rc522.uid.size; i++) {
-        uuid.uuid[i] = oracle_rfid_rc522.uid.uidByte[i];
+        uuid->uuid[i] = oracle_rfid_rc522.uid.uidByte[i];
     }
-    uuid.size = oracle_rfid_rc522.uid.size;
+    uuid->size = oracle_rfid_rc522.uid.size;
 
     // Halt PICC
     oracle_rfid_rc522.PICC_HaltA();
