@@ -20,12 +20,15 @@ static void _oracle_rfid_mqtt_callback(char* topic, byte *payload, unsigned int 
 
 void oracle_rfid_mqtt_publish(const char* topic, const char* payload)
 {
+    // Retry twice
     if (!oracle_rfid_mqtt_client.publish(topic, payload)) {
         oracle_rfid_mqtt_reconnect();
-        Serial.print("Failed publish: ");
-        Serial.print(strlen(topic));
-        Serial.print(" ");
-        Serial.println(strlen(payload));
+        if (!oracle_rfid_mqtt_client.publish(topic, payload)) {
+            Serial.print("Failed publish: ");
+            Serial.print(strlen(topic));
+            Serial.print(" ");
+            Serial.println(strlen(payload));
+        }
     }
 }
 
