@@ -19,7 +19,7 @@
 #include <uptime_formatter.h>
 
 //#include "oracle_rfid_leds.h"
-//#include "oracle_rfid_rc522.h"
+#include "oracle_rfid_rc522.h"
 
 /* Alice Libraries */
 #include <AliceDefaultConfig.h>
@@ -102,7 +102,7 @@ int RfidIsEmpty(void)
 {
   char uuid_empty_str[64];
   char *uuid_str = __rfid_context.options.uuid;
-  //oracle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_empty_str, 16);
+  oracle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_empty_str, 16);
   return !strncmp(__rfid_context.options.uuid, uuid_empty_str, 16);
 }
 
@@ -111,25 +111,24 @@ void resetRfidHex(void)
   char *uuid_str = NULL;
   rfidLock();
   uuid_str = __rfid_context.options.uuid;
-  //oracle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_str, 16);
+  oracle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_str, 16);
   //oracle_rfid_leds_turnoff();
   rfid_is_valid = false;
   rfidUnlock();
 }
 
-#if 0
 void setRfidHex(oracle_rfid_rc522_uuid_t *new_uuid)
 {
   char *uuid_str = NULL;
 
   rfidLock();
   uuid_str = __rfid_context.options.uuid;
-  //oracle_rfid_rc522_copy_uuid(new_uuid, __rfid_context.options.uuid, 16);
+  oracle_rfid_rc522_copy_uuid(new_uuid, __rfid_context.options.uuid, 16);
   //oracle_rfid_leds_change_color(CRGB::Blue);
   rfid_is_valid = true;
   rfidUnlock();
 }
-#endif
+
 
 static void rfidContextInit(void)
 {
@@ -138,7 +137,7 @@ static void rfidContextInit(void)
   __rfid_context.state.error = RFID_ERROR_TYPE_OK;
   __rfid_context.state.action = RFID_ACTION_TYPE_POLL;
   __rfid_context.state.status = RFID_STATUS_TYPE_ACTIVE;
-  //oracle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_str, 16);
+  oracle_rfid_rc522_copy_uuid(&oracle_rfid_rc522_empty_uuid, uuid_str, 16);
   __rfid_context.mutex = xSemaphoreCreateMutex();
 }
 
@@ -259,8 +258,8 @@ void setup(void)
   aliceDumpBinaryInfo(true);
   delay(1000); /* Wait for WiFi to be ready */
 
-  //oracle_rfid_rc522_config_t rfid_rc522_config = ORACLE_RFID_RC522_CONFIG_DEFAULT();
-  //oracle_rfid_rc522_dump_config(&rfid_rc522_config);
+  oracle_rfid_rc522_config_t rfid_rc522_config = ORACLE_RFID_RC522_CONFIG_DEFAULT();
+  oracle_rfid_rc522_dump_config(&rfid_rc522_config);
   //oracle_rfid_rc522_init(&rfid_rc522_config);
 
   //oracle_rfid_leds_turnoff();
@@ -268,14 +267,13 @@ void setup(void)
 
 static void processAction(void)
 { 
-#if 0
+
   oracle_rfid_rc522_uuid_t new_uuid;
   
   if (!oracle_rfid_rc522_read(&new_uuid))
     return;
   
   setRfidHex(&new_uuid);
-#endif
 }
 
 void loop(void)
