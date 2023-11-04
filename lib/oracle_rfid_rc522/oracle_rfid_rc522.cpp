@@ -9,7 +9,7 @@
 static MFRC522 oracle_rfid_rc522;
 
 oracle_rfid_rc522_uuid_t oracle_rfid_rc522_empty_uuid = {
-    .uuid = {0, 0, 0, 0}, .size = 4;
+    .uuid = {0, 0, 0, 0}, .size = 4
 };
 
 bool oracle_rfid_rc522_read(oracle_rfid_rc522_uuid_t uuid)
