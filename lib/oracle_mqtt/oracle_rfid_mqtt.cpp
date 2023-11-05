@@ -2,6 +2,7 @@
 #include <PubSubClient.h> //Librairie pour la gestion Mqtt
 #include <uptime_formatter.h>
 
+#include <oracle_leds_mqtt.h>
 #include <oracle_rfid_mqtt.h>
 
 WiFiClient wlanclient;
@@ -10,6 +11,9 @@ static PubSubClient oracle_rfid_mqtt_client(wlanclient);
 
 static void _oracle_rfid_mqtt_callback(char* topic, byte *payload, unsigned int length)
 {
+    Serial.print ("Message arrived on Topic:");
+    Serial.println(topic);
+
     Serial.println("receive msg !");
 
     if (NULL == oracle_rfid_mqtt_callback)
@@ -32,17 +36,39 @@ void oracle_rfid_mqtt_publish(const char* topic, const char* payload)
     }
 }
 
-void oracle_rfid_mqtt_publish_uuid(const char* payload)
+void oracle_mqtt_print_payload(byte *payload, unsigned int length)
 {
-    const char *topic = "/esp32/uuid";
-    oracle_rfid_mqtt_publish(topic, payload);
+  Serial.print("payload: '");
+  for (int i = 0; i < length; i++)
+  {
+    Serial.print((char)payload[i]);
+  }
+  Serial.print("' (size: ");
+  Serial.print(length);
+  Serial.println(")");
 }
 
 void oracle_rfid_mqtt_publish_uptime(void)
 {
-    const char *topic = "/esp32/uptime";
-    String uptime = uptime_formatter::getUptime();
+    const char *topic = "/esp32/misc/get/uptime";
+    String uptime = uptime_formatter::getUptimeWithMillis();
     oracle_rfid_mqtt_publish(topic, uptime.c_str());
+}
+
+void oracle_mqtt_subscribe(const char *topic)
+{
+    if (!oracle_rfid_mqtt_client.connected())
+        return;
+
+    oracle_rfid_mqtt_client.subscribe(topic);
+}
+
+void oracle_mqtt_misc_subscribe(void)
+{
+    if (!oracle_rfid_mqtt_client.connected())
+        return;
+
+    oracle_rfid_mqtt_client.subscribe("/esp32/misc/set/uptime");
 }
 
 void oracle_rfid_mqtt_reconnect(void)
@@ -53,19 +79,11 @@ void oracle_rfid_mqtt_reconnect(void)
     if (!oracle_rfid_mqtt_client.connect("ESP32Client")) {
       Serial.print("echec, code erreur= ");
       Serial.println(oracle_rfid_mqtt_client.state());
-    }
-
-    if (!oracle_rfid_mqtt_client.subscribe("/esp32/restart")) {
-        Serial.println("Failed subscribe !");
+      return;
     }
     
-    if (!oracle_rfid_mqtt_client.subscribe("/esp32/leds/enable")) {
-        Serial.println("Failed subscribe !");
-    }
-
-    if (!oracle_rfid_mqtt_client.subscribe("/esp32/leds/disable")) {
-        Serial.println("Failed subscribe !");
-    }
+    oracle_mqtt_misc_subscribe();
+    oracle_leds_mqtt_subscribe();
 }
 
 void oracle_rfid_mqtt_set_callback(oracle_rfid_mqtt_callback_t callback)

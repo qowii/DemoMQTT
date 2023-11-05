@@ -4,6 +4,17 @@
 #include "AliceWiFi.h"
 #include <esp_wifi.h>
 
+#define ORACLE_RFID_WIFI_CUSTOM
+
+#ifdef ORACLE_RFID_WIFI_CUSTOM
+#include "oracle_rfid_custom_newtork.h"
+#define ORACLE_RFID_WIFI_SSID   ORACLE_RFID_WIFI_CUSTOM_SSID
+#define ORACLE_RFID_WIFI_PWD    ORACLE_RFID_WIFI_CUSTOM_PWD
+#else
+#define ORACLE_RFID_WIFI_SSID ALICE_WIFI_CONFIG_SSID
+#define ORACLE_RFID_WIFI_PWD ALICE_WIFI_CONFIG_PWD
+#endif
+
 // ALICE_WIFI_CONFIG_MAC_ADDRESS_DEFAULT
 static uint8_t AliceWifiNewMACAddress[6] = {0x32, 0xAE, 0xA4, 0x07, 0x0D, 0x66};
 
@@ -148,8 +159,8 @@ void WiFiGotIP(WiFiEvent_t event, WiFiEventInfo_t info)
 
 void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info)
 {
-  const char *ssid = ALICE_WIFI_CONFIG_SSID;
-  const char *password = ALICE_WIFI_CONFIG_PWD;
+  const char *ssid = ORACLE_RFID_WIFI_SSID;
+  const char *password = ORACLE_RFID_WIFI_PWD;
 
   Serial.println("\nDisconnected from WiFi access point");
   Serial.print("WiFi lost connection. Reason: ");
@@ -161,8 +172,8 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info)
 
 bool AliceWiFiStart(void)
 {
-    const char *ssid = ALICE_WIFI_CONFIG_SSID;
-    const char *password = ALICE_WIFI_CONFIG_PWD;
+    const char *ssid = ORACLE_RFID_WIFI_SSID;
+    const char *password = ORACLE_RFID_WIFI_PWD;
     
     WiFi.mode(WIFI_STA);
 

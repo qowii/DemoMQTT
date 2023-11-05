@@ -21,9 +21,12 @@
 #include <FastLED.h>
 #include <uptime_formatter.h>
 
-#include "oracle_rfid_leds.h"
+/* Oracle Libraries */
+#include "oracle_leds.h"
+#include "oracle_leds_mqtt.h"
 #include "oracle_rfid_mqtt.h"
-#include "oracle_rfid_rc522.h"
+#include "oracle_rc522.h"
+#include "oracle_rc522_mqtt.h"
 
 /* Alice Libraries */
 #include <AliceDefaultConfig.h>
@@ -34,11 +37,10 @@
 static const char *_alice_model_type = "RFID";
 static AliceWebSocketServer *websocket = NULL;
 
-void mqttCallback(char *topic, byte *payload, unsigned int length) {
-  Serial.print ("Message arrived on Topic:");
-  Serial.print(topic);
-  Serial.print(" ");
-  Serial.println((char *) payload);
+void mqttCallback(char *topic, byte *payload, unsigned int length)
+{
+  if (oracle_leds_mqtt_callback(topic, payload, length))
+    return;
 }
 
 void setup(void)
@@ -52,15 +54,15 @@ void setup(void)
   aliceDumpBinaryInfo(false);
   Serial.println(_alice_model_type);
   
-  oracle_rfid_leds_init();
-  oracle_rfid_leds_change_color(CRGB::Red);
+  oracle_leds_init();
+  oracle_leds_set_leds_color(CRGB::Red);
 
   /* Turn on Wifi */
   Serial.println("Starting Alice WiFi");
   Serial.println();
   AliceWiFiStart();
 
-  oracle_rfid_leds_change_color(CRGB::Blue);
+  oracle_leds_set_leds_color(CRGB::Blue);
   AliceWiFiWaitConnectStatus();
   
   Serial.println("Starting Alice WebSocket");
@@ -68,17 +70,17 @@ void setup(void)
   websocket->Run();
   delay(1000);
 
-  oracle_rfid_mqtt_setup("192.168.131.58", 1883);
+  oracle_rfid_mqtt_setup("192.168.1.140", 1883);
   oracle_rfid_mqtt_set_callback(mqttCallback);
 
   Serial.println("Setup network DONE");
   WebSerial.println("Setup network DONE");
 
-  oracle_rfid_leds_change_color(CRGB::Green);
+  oracle_leds_set_leds_color(CRGB::Green);
   
   Serial.println("Upload :: Wait 15 seconds for binary upload");
   WebSerial.println("Wait 15 seconds for binary upload");
-  delay(15 * 1000); /* Wait for WiFi to be ready */
+  //delay(15 * 1000); /* Wait for WiFi to be ready */
   Serial.println("Upload :: 15 seconds elapsed");
   WebSerial.println("Upload :: 15 seconds elapsed");
 
@@ -89,7 +91,7 @@ void setup(void)
   oracle_rfid_rc522_dump_config(&rfid_rc522_config);
   oracle_rfid_rc522_init(&rfid_rc522_config);
 
-  oracle_rfid_leds_turnoff();
+  oracle_leds_turn_leds_off();
 }
 
 void loop(void)
@@ -99,24 +101,14 @@ void loop(void)
   }
 
   EVERY_N_MILLISECONDS(ALICE_ESP32_CONFIG_DELAY) {
-    char uuid_str[16];
-    oracle_rfid_rc522_uuid_t new_uuid;
-  
-    oracle_rfid_mqtt_loop();
-    websocket->cleanupClients();
     
     if (!AliceWiFiCheckConnectStatus()) {
-      oracle_rfid_leds_change_color(CRGB::Red);
+      oracle_leds_set_leds_color(CRGB::Red);
       return;
     }
-
-    if (!oracle_rfid_rc522_read(&new_uuid)) {
-      return;
-    }
-
-    /* uuid become byte array */
-    oracle_rfid_leds_change_color(CRGB::Blue);
-    oracle_rfid_rc522_copy_uuid(&new_uuid, uuid_str, 16);
-    oracle_rfid_mqtt_publish_uuid(uuid_str);
+  
+    oracle_rfid_mqtt_loop();
+    oracle_rc522_mqtt_loop();
+    websocket->cleanupClients();
   }
 }

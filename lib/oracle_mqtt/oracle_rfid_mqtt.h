@@ -5,8 +5,9 @@
 
 typedef void (*oracle_rfid_mqtt_callback_t) (char* topic, byte *payload, unsigned int length);
 
+void oracle_mqtt_subscribe(const char *topic);
+
 void oracle_rfid_mqtt_publish(const char* topic, const char* payload);
-void oracle_rfid_mqtt_publish_uuid(const char* payload);
 void oracle_rfid_mqtt_publish_uptime(void);
 
 void oracle_rfid_mqtt_reconnect(void);

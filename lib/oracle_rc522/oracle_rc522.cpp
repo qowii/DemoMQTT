@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 #include <WebSerialLite.h>
 
-#include "oracle_rfid_rc522.h"
+#include <oracle_rc522.h>
 
 static MFRC522 oracle_rfid_rc522;
 
