@@ -1,5 +1,5 @@
-#ifndef __include_oracle_rfid_rc522_h
-#define __include_oracle_rfid_rc522_h
+#ifndef __include_oracle_rc522_h
+#define __include_oracle_rc522_h
 
 #include <stdint.h>
 
@@ -26,7 +26,7 @@
     .rst_pin = RST_PIN\
 }
 
-typedef struct oracle_rfid_rc522_config_s {
+typedef struct oracle_rc522_config_s {
     uint8_t enable_spi;
     uint8_t sck_pin;
     uint8_t miso_pin;
@@ -34,20 +34,24 @@ typedef struct oracle_rfid_rc522_config_s {
     uint8_t sda_pin;
     uint8_t rst_pin;
     uint16_t pad;
-} oracle_rfid_rc522_config_t;
+} oracle_rc522_config_t;
 
-typedef struct oracle_rfid_rc522_uuid_s {
+typedef struct oracle_rc522_uuid_s {
     uint8_t uuid[8];
     uint8_t size;
-} oracle_rfid_rc522_uuid_t;
+} oracle_rc522_uuid_t;
 
-extern oracle_rfid_rc522_uuid_t oracle_rfid_rc522_empty_uuid;
+extern oracle_rc522_uuid_t oracle_rc522_empty_uuid;
 
-bool oracle_rfid_rc522_read(oracle_rfid_rc522_uuid_t *uuid);
-void oracle_rfid_rc522_init(oracle_rfid_rc522_config_t *config);
-void oracle_rfid_rc522_dump_config(oracle_rfid_rc522_config_t *config);
-void oracle_rfid_rc522_dump_fwconfig(void);
-void oracle_rfid_rc522_copy_uuid(oracle_rfid_rc522_uuid_t *uuid,
+
+void oracle_rc522_init(void);
+void oracle_rc522_init(oracle_rc522_config_t *config);
+
+bool oracle_rc522_read(oracle_rc522_uuid_t *uuid);
+
+void oracle_rc522_dump_config(oracle_rc522_config_t *config);
+void oracle_rc522_dump_fwconfig(void);
+void oracle_rc522_copy_uuid(oracle_rc522_uuid_t *uuid,
                                  char *buffer, uint8_t buffer_size);
 
-#endif /* #ifndef __include_oracle_rfid_rc522_h */
+#endif /* #ifndef __include_oracle_rc522_h */

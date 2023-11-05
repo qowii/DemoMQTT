@@ -6,7 +6,7 @@
  * @note Created by Antoine CAPRA
  */
 #include <oracle_leds.h>
-#include <oracle_rfid_mqtt.h>
+#include <oracle_mqtt.h>
 #include <oracle_utils.h>
 
 /*!
@@ -17,9 +17,9 @@ static void oracle_leds_mqtt_publish_leds_status(bool status)
 {
     const char *topic = "/esp32/leds/get/status";
     if (status)
-        oracle_rfid_mqtt_publish(topic, "true");
+        oracle_mqtt_publish(topic, "true");
     else
-        oracle_rfid_mqtt_publish(topic, "false");
+        oracle_mqtt_publish(topic, "false");
 }
 
 /*!
@@ -57,7 +57,7 @@ static void oracle_leds_mqtt_publish_leds_brightness(uint8_t brightness)
     char payload[4];
     const char *topic = "/esp32/leds/get/brightness";
     sprintf(payload, "%d", brightness);
-    oracle_rfid_mqtt_publish(topic, payload);
+    oracle_mqtt_publish(topic, payload);
 }
 
 /*!
@@ -120,9 +120,9 @@ static void oracle_leds_mqtt_publish_led_status(uint8_t led_index, bool status)
     char topic[64];
     snprintf(topic, 64, "/esp32/led/%d/get/status", led_index);
     if (status)
-        oracle_rfid_mqtt_publish(topic, "true");
+        oracle_mqtt_publish(topic, "true");
     else
-        oracle_rfid_mqtt_publish(topic, "false");
+        oracle_mqtt_publish(topic, "false");
 }
 
 /*!

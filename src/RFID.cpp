@@ -24,7 +24,7 @@
 /* Oracle Libraries */
 #include "oracle_leds.h"
 #include "oracle_leds_mqtt.h"
-#include "oracle_rfid_mqtt.h"
+#include "oracle_mqtt.h"
 #include "oracle_rc522.h"
 #include "oracle_rc522_mqtt.h"
 
@@ -41,6 +41,12 @@ void mqttCallback(char *topic, byte *payload, unsigned int length)
 {
   if (oracle_leds_mqtt_callback(topic, payload, length))
     return;
+}
+
+void oracle_main_mqtt_init(void)
+{
+  oracle_mqtt_setup();
+  oracle_mqtt_set_callback(mqttCallback);
 }
 
 void setup(void)
@@ -70,8 +76,7 @@ void setup(void)
   websocket->Run();
   delay(1000);
 
-  oracle_rfid_mqtt_setup("192.168.1.140", 1883);
-  oracle_rfid_mqtt_set_callback(mqttCallback);
+  oracle_main_mqtt_init();
 
   Serial.println("Setup network DONE");
   WebSerial.println("Setup network DONE");
@@ -87,9 +92,7 @@ void setup(void)
   aliceDumpBinaryInfo(true);
   delay(1000); /* Wait for WiFi to be ready */
 
-  oracle_rfid_rc522_config_t rfid_rc522_config = ORACLE_RFID_RC522_CONFIG_DEFAULT();
-  oracle_rfid_rc522_dump_config(&rfid_rc522_config);
-  oracle_rfid_rc522_init(&rfid_rc522_config);
+  oracle_rc522_init();
 
   oracle_leds_turn_leds_off();
 }
@@ -97,7 +100,7 @@ void setup(void)
 void loop(void)
 {
   EVERY_N_SECONDS(60) {
-    oracle_rfid_mqtt_publish_uptime();
+    oracle_mqtt_publish_uptime();
   }
 
   EVERY_N_MILLISECONDS(ALICE_ESP32_CONFIG_DELAY) {
@@ -107,7 +110,7 @@ void loop(void)
       return;
     }
   
-    oracle_rfid_mqtt_loop();
+    oracle_mqtt_loop();
     oracle_rc522_mqtt_loop();
     websocket->cleanupClients();
   }
