@@ -4,7 +4,7 @@
 #include "AliceWiFi.h"
 #include <esp_wifi.h>
 
-#define ORACLE_RFID_WIFI_CUSTOM
+//#define ORACLE_RFID_WIFI_CUSTOM
 
 #ifdef ORACLE_RFID_WIFI_CUSTOM
 #include "oracle_rfid_custom_newtork.h"
