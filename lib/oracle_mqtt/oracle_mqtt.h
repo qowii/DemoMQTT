@@ -2,6 +2,7 @@
 #define __include_oracle_mqtt_h
 
 #include <Arduino.h>
+#include <AliceDefaultConfig.h>
 
 #define ORACLE_MQTT_DEFAULT_PORT 1883
 #define ORACLE_MQTT_DEFAULT_SERVER "192.168.1.140"

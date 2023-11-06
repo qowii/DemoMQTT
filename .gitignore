@@ -61,4 +61,4 @@ dkms.conf
 *.code-workspace
 
 # Perso
-lib/oracle_rfid_custom/*
+lib/oracle_custom/*

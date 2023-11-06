@@ -5,9 +5,12 @@
  * @date 2021-04-30
  * @note Created by Antoine CAPRA
  */
+#include <FastLED.h>
+
 #include <oracle_leds.h>
 #include <oracle_mqtt.h>
 #include <oracle_utils.h>
+#include <oracle_leds_mqtt.h>
 
 /*!
  * @brief Publish leds status
@@ -272,5 +275,9 @@ void oracle_leds_mqtt_subscribe(void)
 
 bool oracle_leds_mqtt_loop(void)
 {
+  EVERY_N_MILLISECONDS(ORACLE_LEDS_MQTT_LOOP_DELAY) {
+    return true;
+  }
+  
   return true;
 }

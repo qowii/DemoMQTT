@@ -1,6 +1,8 @@
 #ifndef __include_oracle_hcsr04_mqtt_h
 #define __include_oracle_hcsr04_mqtt_h
 
+#include <AliceDefaultConfig.h>
+
 #define ORACLE_HCSR04_MQTT_LOOP_DELAY ALICE_ESP32_CONFIG_DELAY
 
 /*!

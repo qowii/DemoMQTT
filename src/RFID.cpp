@@ -16,24 +16,22 @@
 #include <Arduino.h>
 #include <SPI.h>            //https://www.arduino.cc/en/reference/SPI
 
-#include <ArduinoJson.h>
 #include <WebSerialLite.h>
 #include <FastLED.h>
-#include <uptime_formatter.h>
 
 /* Oracle Libraries */
-#include "oracle_leds.h"
-#include "oracle_leds_mqtt.h"
-#include "oracle_mqtt.h"
-#include "oracle_rc522.h"
-#include "oracle_rc522_mqtt.h"
-#include "oracle_hcsr04.h"
-#include "oracle_utils_misc_mqtt.h"
+#include <oracle_leds.h>
+#include <oracle_leds_mqtt.h>
+#include <oracle_mqtt.h>
+#include <oracle_rc522.h>
+#include <oracle_rc522_mqtt.h>
+#include <oracle_hcsr04.h>
+#include <oracle_utils_misc_mqtt.h>
+#include <oracle_wifi.h>
 
 /* Alice Libraries */
 #include <AliceDefaultConfig.h>
 #include <AliceWebSocketServer.h>
-#include <AliceWiFi.h>
 #include <version.h>
 
 static const char *_alice_model_type = "RFID";
@@ -65,13 +63,7 @@ void setup(void)
   oracle_leds_setup();
   oracle_leds_set_leds_color(CRGB::Red);
 
-  /* Turn on Wifi */
-  Serial.println("Starting Alice WiFi");
-  Serial.println();
-  AliceWiFiStart();
-
-  oracle_leds_set_leds_color(CRGB::Blue);
-  AliceWiFiWaitConnectStatus();
+  oracle_wifi_setup();
   
   Serial.println("Starting Alice WebSocket");
   websocket = new AliceWebSocketServer(ALICE_SERVER_CONFIG_PORT);
@@ -79,9 +71,6 @@ void setup(void)
   delay(1000);
 
   oracle_main_mqtt_init();
-
-  Serial.println("Setup network DONE");
-  WebSerial.println("Setup network DONE");
 
   oracle_leds_set_leds_color(CRGB::Green);
   
