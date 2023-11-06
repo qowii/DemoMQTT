@@ -19,8 +19,11 @@
     .gpio_echo = ORACLE_HCSR04_GPIO_ECHO,\
     .num_repeats = ORACLE_HCSR04_NUM_REPEATS,\
     .pulse_delay = TRIG_PULSE_DURATION_US,\
-    .max_value = ORACLE_HCSR04_MAX_VALUE,\
     .max_distance = ALICE_HCSR04_CONFIG_MAX_DISTANCE,\
+    .pad0 = 0,\
+    .pad1 = 0,\
+    .pad2 = 0,\
+    .max_value = ORACLE_HCSR04_MAX_VALUE,\
     .speed_sound = ORACLE_HCSR04_SPEED_OF_SOUND\
 }
 
@@ -30,7 +33,9 @@ typedef struct oracle_hcsr04_config_s {
     uint8_t num_repeats;
     uint8_t pulse_delay;
     uint8_t max_distance;
-    uint8_t pad[3];
+    uint8_t pad0;
+    uint8_t pad1;
+    uint8_t pad2;
     int max_value;
     double speed_sound;
 } oracle_hcsr04_config_t;
