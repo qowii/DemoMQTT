@@ -1,5 +1,7 @@
 
 #include <Arduino.h>
+#include <WebSerialLite.h>
+
 #include <oracle_hcsr04.h>
 
 oracle_hcsr04_context_t oracle_hcsr04_context;
@@ -67,7 +69,6 @@ void oracle_hcsr04_setup(oracle_hcsr04_config_t *config)
     ctx->pulse_delay = config->pulse_delay;
     ctx->max_value = config->max_value;
     ctx->max_distance = config->max_distance;
-    ctx->distance = config->distance;
     ctx->speed_sound = config->speed_sound;
     ctx->distance = UINT8_MAX;
 
