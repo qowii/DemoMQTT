@@ -13,7 +13,7 @@ static void oracle_hcsr04_mqtt_publish_distance(uint8_t distance)
 
 void oracle_hcsr04_mqtt_loop(void)
 {
-    const uin8_t dist = oracle_hcsr04_get_distance();
+    const uint8_t dist = oracle_hcsr04_get_distance();
     oracle_hcsr04_mqtt_publish_distance(dist);
 }
 

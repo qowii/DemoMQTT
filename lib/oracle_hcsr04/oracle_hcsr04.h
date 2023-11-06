@@ -50,7 +50,7 @@ typedef struct oracle_hcsr04_context_s {
 void oracle_hcsr04_setup(void);
 void oracle_hcsr04_setup(oracle_hcsr04_config_t *config);
 
-void oracle_hcsr04_get_distance(void);
+uint8_t oracle_hcsr04_get_distance(void);
 uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *ctx);
 
 #endif /* #ifndef __include_oracle_hcsr04_h */
