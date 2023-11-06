@@ -42,7 +42,7 @@ typedef struct oracle_hcsr04_context_s {
     uint8_t pulse_delay;
     uint8_t max_distance;
     uint8_t distance;
-    uin8_t pad[2];
+    uint8_t pad[2];
     int max_value;
     double speed_sound;
 } oracle_hcsr04_context_t;
