@@ -45,6 +45,29 @@ void oracle_main_mqtt_setup(void)
   oracle_mqtt_set_callback(mqttCallback);
 }
 
+void oracle_main_wait_for_upload(uint8_t seconds)
+{
+  char buffer[256];
+
+  if (seconds == 0)
+    return;
+
+  snprintf(buffer, sizeof(buffer), "Upload :: Wait %d seconds for binary upload", seconds);
+  Serial.println(buffer);
+  WebSerial.println(buffer);
+
+  delay(seconds * 1000);  /* Wait for WiFi to be ready */
+
+  snprintf(buffer, sizeof(buffer), "Upload :: %d seconds elapsed", seconds);
+  Serial.println(buffer);
+  WebSerial.println(buffer);
+}
+
+void oracle_main_wait_for_upload(void)
+{
+  oracle_main_wait_for_upload(0);
+}
+
 void setup(void)
 {
   Serial.begin(115200);
@@ -56,6 +79,7 @@ void setup(void)
 
   oracle_wifi_setup();
 
+  oracle_main_mqtt_init();
   oracle_leds_set_leds_color(CRGB::Green);
   oracle_leds_apply();
 
