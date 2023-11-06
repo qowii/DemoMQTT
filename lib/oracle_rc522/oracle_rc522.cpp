@@ -87,7 +87,7 @@ void oracle_rc522_dumpinfo(void)
     oracle_rc522.PCD_DumpVersionToSerial();
 }
 
-void oracle_rc522_init(oracle_rc522_config_t *config)
+void oracle_rc522_setup(oracle_rc522_config_t *config)
 {
     Serial.println("Setup RFID BEGIN");
     WebSerial.println("Setup RFID BEGIN");
@@ -100,8 +100,8 @@ void oracle_rc522_init(oracle_rc522_config_t *config)
     WebSerial.println("Setup RFID DONE");
 }
 
-void oracle_rc522_init(void)
+void oracle_rc522_setup(void)
 {
   oracle_rc522_config_t config = ORACLE_RFID_RC522_CONFIG_DEFAULT();
-  oracle_rc522_init(&config);
+  oracle_rc522_setup(&config);
 }

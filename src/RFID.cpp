@@ -49,6 +49,29 @@ void oracle_main_mqtt_init(void)
   oracle_mqtt_set_callback(mqttCallback);
 }
 
+void oracle_main_wait_for_upload(uint8_t seconds)
+{
+  char buffer[256];
+
+  if (seconds == 0)
+    return;
+
+  snprintf(buffer, sizeof(buffer), "Upload :: Wait %d seconds for binary upload", seconds);
+  Serial.println(buffer);
+  WebSerial.println(buffer);
+
+  delay(seconds * 1000);  /* Wait for WiFi to be ready */
+
+  snprintf(buffer, sizeof(buffer), "Upload :: %d seconds elapsed", seconds);
+  Serial.println(buffer);
+  WebSerial.println(buffer);
+}
+
+void oracle_main_wait_for_upload(void)
+{
+  oracle_main_wait_for_upload(0);
+}
+
 void setup(void)
 {
   char buffer[256];
@@ -70,23 +93,17 @@ void setup(void)
   websocket->Run();
   delay(1000);
 
-  oracle_main_mqtt_init();
+  oracle_main_wait_for_upload();
 
+  oracle_main_mqtt_init();
   oracle_leds_set_leds_color(CRGB::Green);
   
-  Serial.println("Upload :: Wait 15 seconds for binary upload");
-  WebSerial.println("Wait 15 seconds for binary upload");
-  //delay(15 * 1000); /* Wait for WiFi to be ready */
-  Serial.println("Upload :: 15 seconds elapsed");
-  WebSerial.println("Upload :: 15 seconds elapsed");
-
   aliceDumpBinaryInfo(true);
   delay(1000); /* Wait for WiFi to be ready */
 
-  oracle_rc522_init();
-
+  oracle_rc522_setup();
   oracle_hcsr04_setup();
-
+  
   oracle_leds_turn_leds_off();
 }
 
