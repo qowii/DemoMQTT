@@ -24,9 +24,6 @@ void oracle_leds_apply(void)
     FastLED.show();
 }
 
-/*!
- * \brief Turn off the leds
- */
 void oracle_leds_turn_leds_off(void)
 {
     for (int i = 0; i < ALICE_LEDS_CONFIG_NUM_LEDS; i++) {
@@ -38,9 +35,6 @@ void oracle_leds_turn_leds_off(void)
     FastLED.clear();
 }
 
-/*!
- * \brief Turn on the leds
- */
 void oracle_leds_turn_leds_on(void)
 {
     for (int i = 0; i < ALICE_LEDS_CONFIG_NUM_LEDS; i++) {
@@ -51,10 +45,6 @@ void oracle_leds_turn_leds_on(void)
     FastLED.show();
 }
 
-/*!
- * \brief Set the leds color
- * \param new_color The new color
-*/
 void oracle_leds_set_leds_color(const CRGB& new_color)
 {
     for (int i = 0; i < ALICE_LEDS_CONFIG_NUM_LEDS; i++) {
@@ -64,39 +54,16 @@ void oracle_leds_set_leds_color(const CRGB& new_color)
     }
 }
 
-/*!
- * \brief Set the leds brightness
- * \param brightness The new brightness
-*/
 void oracle_leds_set_leds_brightness(uint8_t brightness)
 {
     FastLED.setBrightness(brightness);
 }
 
-/*! 
- * \brief Initialize the leds
- */
-void oracle_leds_init(void)
-{
-    Serial.println("Initialize Alice FastLED");
-    FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(oracle_leds_colors, ALICE_LEDS_CONFIG_NUM_LEDS).setCorrection(TypicalLEDStrip);
-    FastLED.setBrightness(ALICE_LEDS_CONFIG_MAX_BRIGHTNESS);
-    delay(100);
-}
-
-/*!
- * \brief Get the number of leds
- * \return The number of leds
- */
 uint8_t oracle_rfid_leds_get_num_leds(void)
 {
     return ALICE_LEDS_CONFIG_NUM_LEDS;
 }
 
-/*!
- * \brief Turn on a led by its index
- * \param led_index The led index
- */
 void oracle_leds_turn_led_on(uint8_t led_index)
 {
     oracle_leds_colors[led_index] = oracle_leds_colors_previous[led_index];
@@ -104,10 +71,6 @@ void oracle_leds_turn_led_on(uint8_t led_index)
     oracle_leds_status[led_index] = true;
 }
 
-/*!
- * \brief Turn off a led by its index
- * \param led_index The led index
- */
 void oracle_leds_turn_led_off(uint8_t led_index)
 {
     oracle_leds_colors_previous[led_index] = oracle_leds_colors[led_index];
@@ -121,4 +84,12 @@ void oracle_leds_turn_led_off(uint8_t led_index)
             continue;   
         oracle_leds_colors[i] = oracle_leds_colors_previous[i];
     }
+}
+
+void oracle_leds_setup(void)
+{
+    Serial.println("Initialize Alice FastLED");
+    FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(oracle_leds_colors, ALICE_LEDS_CONFIG_NUM_LEDS).setCorrection(TypicalLEDStrip);
+    FastLED.setBrightness(ALICE_LEDS_CONFIG_MAX_BRIGHTNESS);
+    delay(100);
 }

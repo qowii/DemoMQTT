@@ -61,7 +61,7 @@ void setup(void)
   aliceDumpBinaryInfo(false);
   Serial.println(_alice_model_type);
   
-  oracle_leds_init();
+  oracle_leds_setup();
   oracle_leds_set_leds_color(CRGB::Red);
 
   /* Turn on Wifi */
