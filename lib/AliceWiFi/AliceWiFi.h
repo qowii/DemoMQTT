@@ -3,6 +3,8 @@
 
 #include <AliceDefaultConfig.h>
 
+#define ALICE_WIFI_LOOP_DELAY ALICE_ESP32_CONFIG_DELAY
+
 bool AliceWiFiStart(void);
 bool AliceWiFiCheckConnectStatus(void);
 void AliceWiFiWaitConnectStatus(void);

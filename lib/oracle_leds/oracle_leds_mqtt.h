@@ -3,6 +3,10 @@
 
 #include "Arduino.h"
 
+#include <AliceDefaultConfig.h>
+
+#define ORACLE_LEDS_MQTT_LOOP_DELAY ALICE_ESP32_CONFIG_DELAY
+
 /*!
   * @brief Subscribe to leds topics
 */

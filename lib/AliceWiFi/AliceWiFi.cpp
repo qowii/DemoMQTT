@@ -228,11 +228,12 @@ void aliceWiFiDetectDownConnection(int interval)
 
 bool oracle_wifi_loop(void)
 {
-  EVERY_N_MILLISECONDS(ALICE_ESP32_CONFIG_DELAY) {
+  EVERY_N_MILLISECONDS(ALICE_WIFI_LOOP_DELAY) {
     if (!AliceWiFiCheckConnectStatus()) {
         oracle_leds_set_leds_color(CRGB::Red);
         return false;
     }
-    return true;
   }
+
+  return true;
 }
