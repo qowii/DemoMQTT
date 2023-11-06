@@ -44,8 +44,8 @@ typedef struct oracle_rc522_uuid_s {
 extern oracle_rc522_uuid_t oracle_rc522_empty_uuid;
 
 
-void oracle_rc522_init(void);
-void oracle_rc522_init(oracle_rc522_config_t *config);
+void oracle_rc522_setup(void);
+void oracle_rc522_setup(oracle_rc522_config_t *config);
 
 bool oracle_rc522_read(oracle_rc522_uuid_t *uuid);
 

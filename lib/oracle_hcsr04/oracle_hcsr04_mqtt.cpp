@@ -31,3 +31,12 @@ void oracle_hcsr04_subscribe(void)
 {
     return;
 }
+
+void oracle_hcsr04_mqtt_setup(oracle_hcsr04_config_t *config){
+    oracle_hcsr04_setup(config);
+}
+
+void oracle_hcsr04_mqtt_setup(void)
+{
+    oracle_hcsr04_setup();
+}

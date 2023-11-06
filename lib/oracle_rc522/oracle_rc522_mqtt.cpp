@@ -20,3 +20,13 @@ bool oracle_rc522_mqtt_loop(void)
     oracle_rc522_mqtt_publish_uuid(&new_uuid);
     return true;
 }
+
+void oracle_rc522_mqtt_setup(void)
+{
+  oracle_rc522_setup();
+}
+
+void oracle_rc522_mqtt_setup(oracle_rc522_config_t *config)
+{
+  oracle_rc522_setup(config);
+}

@@ -20,7 +20,6 @@ static uint8_t oracle_leds_bright_previous[ALICE_LEDS_CONFIG_NUM_LEDS];
 
 void oracle_leds_apply(void)
 {
-    Serial.println("Apply Alice FastLED");
     FastLED.show();
 }
 

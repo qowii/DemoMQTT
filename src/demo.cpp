@@ -14,28 +14,24 @@
 
 /* Arduino Libraries */
 #include <Arduino.h>
-#include <SPI.h>            //https://www.arduino.cc/en/reference/SPI
-
 #include <WebSerialLite.h>
-#include <FastLED.h>
 
 /* Oracle Libraries */
-#include <oracle_leds.h>
-#include <oracle_leds_mqtt.h>
 #include <oracle_mqtt.h>
-#include <oracle_rc522.h>
-#include <oracle_rc522_mqtt.h>
-#include <oracle_hcsr04.h>
-#include <oracle_utils_misc_mqtt.h>
 #include <oracle_wifi.h>
+
+/* Component MQTT callback */
+#include <oracle_hcsr04_mqtt.h>
+#include <oracle_leds_mqtt.h>
+#include <oracle_parfum.h>
+#include <oracle_rc522_mqtt.h>
+#include <oracle_utils_misc_mqtt.h>
 
 /* Alice Libraries */
 #include <AliceDefaultConfig.h>
-#include <AliceWebSocketServer.h>
 #include <version.h>
 
 static const char *_alice_model_type = "RFID";
-static AliceWebSocketServer *websocket = NULL;
 
 void mqttCallback(char *topic, byte *payload, unsigned int length)
 {
@@ -43,7 +39,7 @@ void mqttCallback(char *topic, byte *payload, unsigned int length)
     return;
 }
 
-void oracle_main_mqtt_init(void)
+void oracle_main_mqtt_setup(void)
 {
   oracle_mqtt_setup();
   oracle_mqtt_set_callback(mqttCallback);
@@ -51,49 +47,29 @@ void oracle_main_mqtt_init(void)
 
 void setup(void)
 {
-  char buffer[256];
   Serial.begin(115200);
 
-  snprintf(buffer, sizeof(buffer), "Alice %s", _alice_model_type);
-  Serial.println(buffer);
+  oracle_leds_mqtt_setup();
 
-  aliceDumpBinaryInfo(false);
-  Serial.println(_alice_model_type);
-  
-  oracle_leds_setup();
   oracle_leds_set_leds_color(CRGB::Red);
+  oracle_leds_apply();
 
   oracle_wifi_setup();
-  
-  Serial.println("Starting Alice WebSocket");
-  websocket = new AliceWebSocketServer(ALICE_SERVER_CONFIG_PORT);
-  websocket->Run();
-  delay(1000);
-
-  oracle_main_mqtt_init();
 
   oracle_leds_set_leds_color(CRGB::Green);
-  
-  Serial.println("Upload :: Wait 15 seconds for binary upload");
-  WebSerial.println("Wait 15 seconds for binary upload");
-  //delay(15 * 1000); /* Wait for WiFi to be ready */
-  Serial.println("Upload :: 15 seconds elapsed");
-  WebSerial.println("Upload :: 15 seconds elapsed");
+  oracle_leds_apply();
 
-  aliceDumpBinaryInfo(true);
-  delay(1000); /* Wait for WiFi to be ready */
-
-  oracle_rc522_init();
-
-  oracle_hcsr04_setup();
+  oracle_main_mqtt_setup();
+  oracle_rc522_mqtt_setup();
+  oracle_hcsr04_mqtt_setup();
 
   oracle_leds_turn_leds_off();
+  oracle_leds_apply();
 }
 
 void loop(void)
 {
   oracle_utils_misc_mqtt_loop();
-  websocket->loop();
 
   if (!oracle_wifi_loop())
     return;

@@ -24,7 +24,7 @@ static bool oracle_wifi_check_status(void)
     return (WL_CONNECTED == WiFi.status());
 }
 
-static String oracle_wifi_get_hostname(void)
+String oracle_wifi_get_hostname(void)
 {
     return WiFi.getHostname();
 }
@@ -35,7 +35,7 @@ static void alice_wifi_dump_hostname(void)
     Serial.println(oracle_wifi_get_hostname());
 }
 
-static String oracle_wifi_get_mac_address(void)
+String oracle_wifi_get_mac_address(void)
 {
     return WiFi.macAddress();
 }
@@ -46,7 +46,7 @@ static void alice_wifi_dump_mac_address(void)
     Serial.println(oracle_wifi_get_mac_address());
 }
 
-static String oracle_wifi_get_ip_address(void)
+String oracle_wifi_get_ip_address(void)
 {
     return WiFi.localIP().toString();
 }
@@ -103,7 +103,7 @@ void oracle_wifi_setup(void)
     Serial.println("Wait for WiFi... ");
 }
 
-void oracle_wifi_dump_info(void)
+void oracle_wifi_dump_infos(void)
 {
     if (!oracle_wifi_check_status()) {
         Serial.println("\nDisconnected from the WiFi network");

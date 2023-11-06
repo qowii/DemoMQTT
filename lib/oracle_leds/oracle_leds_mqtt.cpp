@@ -281,3 +281,8 @@ bool oracle_leds_mqtt_loop(void)
   
   return true;
 }
+
+void oracle_leds_mqtt_setup(void)
+{
+  oracle_leds_setup();
+}
