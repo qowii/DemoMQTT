@@ -1,4 +1,6 @@
 
+#include <FastLED.h>
+
 #include <oracle_mqtt.h>
 #include <oracle_hcsr04.h>
 #include <oracle_hcsr04_mqtt.h>
@@ -15,10 +17,14 @@ static void oracle_hcsr04_mqtt_publish_distance(uint8_t distance)
     oracle_mqtt_publish(topic, buffer);
 }
 
-void oracle_hcsr04_mqtt_loop(void)
+bool oracle_hcsr04_mqtt_loop(void)
 {
-    const uint8_t dist = oracle_hcsr04_get_distance();
-    oracle_hcsr04_mqtt_publish_distance(dist);
+    EVERY_N_MILLISECONDS(ORACLE_HCSR04_MQTT_LOOP_DELAY) {
+        const uint8_t dist = oracle_hcsr04_get_distance();
+        oracle_hcsr04_mqtt_publish_distance(dist);
+    }
+
+    return true;
 }
 
 void oracle_hcsr04_subscribe(void)

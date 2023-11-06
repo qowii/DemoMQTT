@@ -1,8 +1,11 @@
 
+#include <FastLED.h>
 #include <WiFi.h>
 
 #include "AliceWiFi.h"
 #include <esp_wifi.h>
+
+#include <oracle_leds.h>
 
 //#define ORACLE_RFID_WIFI_CUSTOM
 
@@ -221,4 +224,15 @@ void aliceWiFiDetectDownConnection(int interval)
         WiFi.reconnect();
         previousMillis = currentMillis;
     }
+}
+
+bool oracle_wifi_loop(void)
+{
+  EVERY_N_MILLISECONDS(ALICE_ESP32_CONFIG_DELAY) {
+    if (!AliceWiFiCheckConnectStatus()) {
+        oracle_leds_set_leds_color(CRGB::Red);
+        return false;
+    }
+    return true;
+  }
 }

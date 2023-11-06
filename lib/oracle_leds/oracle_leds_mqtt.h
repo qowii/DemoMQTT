@@ -17,4 +17,9 @@ void oracle_leds_mqtt_subscribe(void);
 */
 bool oracle_leds_mqtt_callback(const char *topic, byte *payload, unsigned int length);
 
+/*!
+  * @brief Leds MQTT loop
+*/
+bool oracle_leds_mqtt_loop(void);
+
 #endif /* #ifndef __oracle_leds_mqtt_h */

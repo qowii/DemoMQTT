@@ -13,4 +13,6 @@ String AliceWiFiGetHostname(void);
 String AliceWiFiGetMacAddress(void);
 String AliceWiFiGetIpAdress(void);
 
+bool oracle_wifi_loop(void);
+
 #endif /* AliceWiFi_h */

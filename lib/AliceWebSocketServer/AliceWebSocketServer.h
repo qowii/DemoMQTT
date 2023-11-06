@@ -5,6 +5,8 @@
 #include <ESPAsyncWebServer.h>
 #include <AliceDefaultConfig.h>
 
+#define ORACLE_WS_SERVER_LOOP_DELAY ALICE_ESP32_CONFIG_DELAY
+
 typedef void (*handle_msg_fn)(JsonDocument&);
 
 class AliceWebSocketServer {
@@ -15,6 +17,7 @@ class AliceWebSocketServer {
         void SetHandleMessageCallback(handle_msg_fn func);
         void Run(void);
         AsyncWebServer *getServer(void);
+        void loop(void);
 
     private:
         AsyncWebServer *_server;
@@ -22,5 +25,6 @@ class AliceWebSocketServer {
         SemaphoreHandle_t _mutex;
         int _port;
 };
+
 
 #endif /* AliceWebSocketServer_h */

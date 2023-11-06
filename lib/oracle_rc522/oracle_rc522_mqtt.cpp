@@ -9,13 +9,14 @@ static void oracle_rc522_mqtt_publish_uuid(oracle_rc522_uuid_t *uuid)
     oracle_mqtt_publish(topic, uuid_str);
 }
 
-void oracle_rc522_mqtt_loop(void)
+bool oracle_rc522_mqtt_loop(void)
 {
     oracle_rc522_uuid_t new_uuid;
 
     if (!oracle_rc522_read(&new_uuid)) {
-      return;
+      return false;
     }
 
-    oracle_rc522_mqtt_publish_uuid(&new_uuid); 
+    oracle_rc522_mqtt_publish_uuid(&new_uuid);
+    return true;
 }

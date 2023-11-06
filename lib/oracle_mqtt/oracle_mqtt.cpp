@@ -1,9 +1,9 @@
-#include <WiFi.h>
+#include <FastLED.h>
 #include <PubSubClient.h> //Librairie pour la gestion Mqtt
-#include <uptime_formatter.h>
+#include <WiFi.h>
 
-#include <oracle_leds_mqtt.h>
 #include <oracle_mqtt.h>
+#include <oracle_leds_mqtt.h>
 
 WiFiClient wlanclient;
 static oracle_mqtt_callback_t oracle_mqtt_callback = NULL;
@@ -48,13 +48,6 @@ void oracle_mqtt_print_payload(byte *payload, unsigned int length)
   Serial.println(")");
 }
 
-void oracle_mqtt_publish_uptime(void)
-{
-    const char *topic = "/esp32/misc/get/uptime";
-    String uptime = uptime_formatter::getUptimeWithMillis();
-    oracle_mqtt_publish(topic, uptime.c_str());
-}
-
 void oracle_mqtt_subscribe(const char *topic)
 {
     if (!oracle_mqtt_client.connected())
@@ -91,9 +84,13 @@ void oracle_mqtt_set_callback(oracle_mqtt_callback_t callback)
     oracle_mqtt_callback = callback;
 }
 
-void oracle_mqtt_loop(void)
+bool oracle_mqtt_loop(void)
 {
-    oracle_mqtt_client.loop();
+    EVERY_N_MILLISECONDS(ORACLE_MQTT_LOOP_DELAY) {
+        oracle_mqtt_client.loop();
+    }
+
+    return true;
 }
 
 void oracle_mqtt_setup(oracle_mqtt_config_t *config)

@@ -220,7 +220,7 @@ static bool oracle_leds_mqtt_set_leds_apply(const char *topic, byte *payload, un
 
 bool oracle_leds_mqtt_callback(const char *topic, byte *payload, unsigned int length)
 {
-    if (oracle_leds_mqtt_set_leds_status(topic, payload, length)) {
+  if (oracle_leds_mqtt_set_leds_status(topic, payload, length)) {
     return true;
   }
 
@@ -268,4 +268,9 @@ void oracle_leds_mqtt_subscribe(void)
       oracle_mqtt_subscribe(topic);
     }
   }
+}
+
+bool oracle_leds_mqtt_loop(void)
+{
+  return true;
 }

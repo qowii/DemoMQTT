@@ -28,6 +28,7 @@
 #include "oracle_rc522.h"
 #include "oracle_rc522_mqtt.h"
 #include "oracle_hcsr04.h"
+#include "oracle_utils_misc_mqtt.h"
 
 /* Alice Libraries */
 #include <AliceDefaultConfig.h>
@@ -102,19 +103,12 @@ void setup(void)
 
 void loop(void)
 {
-  EVERY_N_SECONDS(60) {
-    oracle_mqtt_publish_uptime();
-  }
+  oracle_utils_misc_mqtt_loop();
+  websocket->loop();
 
-  EVERY_N_MILLISECONDS(ALICE_ESP32_CONFIG_DELAY) {
-    
-    if (!AliceWiFiCheckConnectStatus()) {
-      oracle_leds_set_leds_color(CRGB::Red);
-      return;
-    }
-  
-    oracle_mqtt_loop();
-    oracle_rc522_mqtt_loop();
-    websocket->cleanupClients();
-  }
+  if (!oracle_wifi_loop())
+    return;
+
+  oracle_mqtt_loop();
+  oracle_rc522_mqtt_loop();
 }

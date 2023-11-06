@@ -1,4 +1,5 @@
 #include <AsyncElegantOTA.h>
+#include <FastLED.h>
 #include <WebSerialLite.h>
 #include "AliceWebSocketServer.h"
 
@@ -177,6 +178,13 @@ AsyncWebServer *AliceWebSocketServer::getServer(void)
 void AliceWebSocketServer::cleanupClients(void)
 {
   _socket->cleanupClients();
+}
+
+void AliceWebSocketServer::loop(void)
+{
+  EVERY_N_MILLISECONDS(ORACLE_WS_SERVER_LOOP_DELAY) {
+    this->cleanupClients();
+  }
 }
 
 void AliceWebSocketServer::SetHandleMessageCallback(handle_msg_fn func)
