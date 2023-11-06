@@ -27,6 +27,7 @@
 #include "oracle_mqtt.h"
 #include "oracle_rc522.h"
 #include "oracle_rc522_mqtt.h"
+#include "oracle_hcsr04.h"
 
 /* Alice Libraries */
 #include <AliceDefaultConfig.h>
@@ -93,6 +94,8 @@ void setup(void)
   delay(1000); /* Wait for WiFi to be ready */
 
   oracle_rc522_init();
+
+  oracle_hcsr04_setup();
 
   oracle_leds_turn_leds_off();
 }
