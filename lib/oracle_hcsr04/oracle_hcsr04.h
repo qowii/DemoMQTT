@@ -29,10 +29,10 @@ typedef struct oracle_hcsr04_config_s {
     uint8_t gpio_echo;
     uint8_t num_repeats;
     uint8_t pulse_delay;
-    uint8_t max_value;
     uint8_t max_distance;
-    uint8_t pad[1];
-    int speed_sound;
+    uint8_t pad[3];
+    int max_value;
+    double speed_sound;
 } oracle_hcsr04_config_t;
 
 typedef struct oracle_hcsr04_context_s {
@@ -40,10 +40,11 @@ typedef struct oracle_hcsr04_context_s {
     uint8_t gpio_echo;
     uint8_t num_repeats;
     uint8_t pulse_delay;
-    uint8_t max_value;
     uint8_t max_distance;
     uint8_t distance;
-    int speed_sound;
+    uin8_t pad[2];
+    int max_value;
+    double speed_sound;
 } oracle_hcsr04_context_t;
 
 void oracle_hcsr04_setup(void);
