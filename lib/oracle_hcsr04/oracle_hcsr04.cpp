@@ -1,6 +1,6 @@
 
 #include <Arduino.h>
-#include <oracle-hcsr04.h>
+#include <oracle_hcsr04.h>
 
 oracle_hcsr04_context_t oracle_hcsr04_context;
 
