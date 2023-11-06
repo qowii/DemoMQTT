@@ -52,10 +52,28 @@ typedef struct oracle_hcsr04_context_s {
     double speed_sound;
 } oracle_hcsr04_context_t;
 
+/*!
+ * @brief Setup the HCSR04 sensor
+ */
 void oracle_hcsr04_setup(void);
+
+/*!
+ * @brief Setup the HCSR04 sensor
+ * @param config The configuration
+ */
 void oracle_hcsr04_setup(oracle_hcsr04_config_t *config);
 
+/*!
+ * @brief Get the distance from the HCSR04 sensor
+ * @return The distance in cm
+ */
 uint8_t oracle_hcsr04_get_distance(void);
+
+/*!
+ * @brief Get the distance from the HCSR04 sensor
+ * @param ctx The context
+ * @return The distance in cm
+ */
 uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *ctx);
 
 #endif /* #ifndef __include_oracle_hcsr04_h */

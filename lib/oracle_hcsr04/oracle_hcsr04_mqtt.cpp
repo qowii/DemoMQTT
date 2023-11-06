@@ -3,6 +3,10 @@
 #include <oracle_hcsr04.h>
 #include <oracle_hcsr04_mqtt.h>
 
+/*!
+ * @brief Publish the distance to the MQTT broker
+ * @param distance The distance to publish
+ */
 static void oracle_hcsr04_mqtt_publish_distance(uint8_t distance)
 {
     char buffer[16];
