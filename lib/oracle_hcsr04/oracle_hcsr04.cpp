@@ -55,7 +55,7 @@ uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *ctx)
 uint8_t oracle_hcsr04_get_distance(void)
 {
     oracle_hcsr04_context_t *ctx = &oracle_hcsr04_context;
-    oracle_hcsr04_get_distance(ctx);
+    return oracle_hcsr04_get_distance(ctx);
 }
 
 void oracle_hcsr04_setup(oracle_hcsr04_config_t *config)
