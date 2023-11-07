@@ -74,7 +74,7 @@ typedef struct oracle_puppets_config_servo_s {
     uint16_t angle_ini;
     uint16_t angle_max;
     uint16_t gpio_pin;
-} struct oracle_puppets_config_servo_t;
+} oracle_puppets_config_servo_t;
 
 typedef struct oracle_puppets_state_servo_s {
     Servo motor;
@@ -90,7 +90,7 @@ typedef struct oracle_puppets_puppet_context_s {
     oracle_puppets_config_servo_t config;
     oracle_puppets_state_servo_t servos;
     oracle_puppets_batchs_t batchs;
-} struct oracle_puppets_puppet_context_t;
+} oracle_puppets_puppet_context_t;
 
 typedef struct oracle_puppets_context_s {
     uint32_t num_puppets;
