@@ -14,7 +14,6 @@
 
 /* Arduino Libraries */
 #include <Arduino.h>
-#include <WebSerialLite.h>
 
 /* Oracle Libraries */
 #include <oracle_mqtt.h>

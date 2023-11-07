@@ -1,4 +1,4 @@
 #pragma once
 
 void aliceDumpSerialCpuFreq(void);
-void aliceDumpBinaryInfo(bool useWebSerial);
+void aliceDumpBinaryInfo(void);

@@ -2,6 +2,8 @@
 #define __include_oracle_puppet_h
 
 #include <Arduino.h>
+#include <Deneyap_Servo.h>
+
 #include <AliceDefaultConfig.h>
 #include <oracle_puppet.h>
 
@@ -62,11 +64,11 @@ typedef struct oracle_puppet_frame_s {
     bool in_use;
 } oracle_puppet_frame_t;
 
-typedef struct oracle_puppet_frames_s {
+typedef struct oracle_puppet_batchs_s {
     oracle_puppet_frame_t frames[ORACLE_PUPPET_NUM_BATCHS];
     uint8_t running_index;
     uint8_t upload_index;
-} oracle_puppet_frames_t;
+} oracle_puppet_batchs_t;
 
 typedef struct oracle_puppet_config_servo_s {
     uint16_t angle_min;
@@ -76,17 +78,19 @@ typedef struct oracle_puppet_config_servo_s {
 } struct oracle_puppet_config_servo_t;
 
 typedef struct oracle_pupper_state_servo_s {
+    Servo motor;
     uint16_t angle;
     uint8_t is_running;
     uint8_t pad0;
 } oracle_pupper_state_servo_t;
 
 typedef struct oracle_puppet_context_s {
-    /* servo */
     uint16_t index;
     uint8_t enable;
     uint8_t pad0;
     oracle_puppet_config_servo_t *config;
+    oracle_pupper_state_servo_t *servos;
+    oracle_puppet_batchs_t *batchs;
 } oracle_puppet_context_t;
 
 #endif /* #ifndef __include_oracle_puppet_h */

@@ -1,6 +1,5 @@
 
 #include <Arduino.h>
-#include <WebSerialLite.h>
 
 #include <oracle_hcsr04.h>
 
@@ -35,7 +34,6 @@ uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *ctx)
 
             snprintf(buffer, sizeof(buffer), "HCSR04 repead elapsed: %lu ms", elapsed_timer);
             Serial.println(buffer);
-            WebSerial.println(buffer);
             once = true;
         }
 
