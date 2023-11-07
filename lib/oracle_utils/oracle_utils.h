@@ -17,7 +17,7 @@ uint16_t oracle_utils_read_uint16(const char *payload);
  * \param payload MQTT payload
  * \return uint64_t value
 */
-uin64_t oracle_utilsread_uint64(const char *payload)
+uint64_t oracle_utilsread_uint64(const char *payload)
 
 /*!
  * \brief Read integer from MQTT payload
