@@ -55,12 +55,6 @@ void oracle_screen_stop(void)
     oracle_screen_stop(ctx);
 }
 
-void oracle_screen_open(void)
-{
-    oracle_screen_context_t *ctx = &oracle_screen_context;
-    oracle_screen_open(ctx);
-}
-
 static bool oracle_screen_is_open(oracle_screen_context_t *ctx)
 {
     if (ctx->state == ORACLE_SCREEN_STATE_OPEN) {
@@ -153,7 +147,7 @@ uint8_t oracle_screen_loop(void)
 void oracle_screen_setup(oracle_screen_config_t *config)
 {
     oracle_screen_context_t *ctx = &oracle_screen_context;
-    
+
     ctx->rpwm_output = config->rpwm_output;
     ctx->lpwm_output = config->lpwm_output;
     ctx->enable_rpwm = config->enable_rpwm;
@@ -161,14 +155,14 @@ void oracle_screen_setup(oracle_screen_config_t *config)
     ctx->fin_de_course_open = config->fin_de_course_open;
     ctx->fin_de_course_closed = config->fin_de_course_closed;
     ctx->state = ORACLE_SCREEN_STATE_STOPPED;
-        
+
     pinMode(config->rpwm_output, OUTPUT);
     pinMode(config->lpwm_output, OUTPUT);
     pinMode(config->enable_rpwm, OUTPUT);
     pinMode(config->enable_lpwm, OUTPUT);
     pinMode(config->fin_de_course_open, INPUT_PULLUP);
     pinMode(config->fin_de_course_closed, INPUT_PULLUP);
-    
+
     analogWrite(config->rpwm_output, 0);
     analogWrite(config->lpwm_output, 0);
 
