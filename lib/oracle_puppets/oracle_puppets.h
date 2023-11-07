@@ -84,7 +84,6 @@ typedef struct oracle_puppets_state_servo_s {
 } oracle_puppert_state_servo_t;
 
 typedef struct oracle_puppets_puppet_context_s {
-    int index;
     uint16_t index;
     uint8_t enable;
     uint8_t pad0;
@@ -94,6 +93,7 @@ typedef struct oracle_puppets_puppet_context_s {
 } struct oracle_puppets_puppet_context_t;
 
 typedef struct oracle_puppets_context_s {
+    uint32_t num_puppets;
     oracle_puppets_puppet_context_t puppets[ORACLE_PUPPETS_NUM_PUPPETS];
 } oracle_puppets_context_t;
 

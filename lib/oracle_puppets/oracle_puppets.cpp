@@ -1,7 +1,7 @@
 
 #include <oracle_puppets.h>
 
-static oracle_puppets_context_t oracle_puppets_contexte;
+static oracle_puppets_context_t oracle_puppets_context;
 
 static const int ORACLE_PUPPETS_PUPPET_init_angle[oracle_puppets_NUM_PUPPETS] = {
     ORACLE_PUPPETS_PUPPET1_INIT_ANGLE,
@@ -46,6 +46,18 @@ static const int ORACLE_PUPPETS_PUPPET_gpio_pin[oracle_puppets_NUM_PUPPETS] = {
     ORACLE_PUPPETS_PUPPET7_GPIO_PIN,
     ORACLE_PUPPETS_PUPPET8_GPIO_PIN
 };
+
+void oracle_puppets_loop(void)
+{
+    oracle_puppets_context_t *ctx = &oracle_puppets_context;
+
+    for (int i = 0; i < ctx->num_puppets; i++ ) {
+        /* Skip inactive motors*/
+        if (!ctx->puppets->enable) {
+            continue;
+        }
+    }
+}
 
 void oracle_puppets_setup(void)
 {
