@@ -9,13 +9,21 @@
 #include <FastLED.h>
 #include "oracle_utils.h"
 
-/*!
- * \brief Read integer from MQTT payload
- *
- * \param payload MQTT payload
- * \param endptr Pointer to the end of the integer
- * \return Integer value
-*/
+uint16_t oracle_utils_read_uint16(const char *payload)
+{
+  uint16_t value = (uint16_t) payload[0];
+  return (value | (uint16_t) payload[1] << 8);
+}
+
+uin64_t oracle_utilsread_uint64(const char *payload)
+{
+  uint16_t value = 0
+  for (int i = 0; i < 8; i++) {
+    value |= (uint16_t) payload[i] << (i * 8);
+  }
+  return value;
+}
+
 uint8_t oracle_utils_read_integer(const char *payload, char **endptr)
 {
   /* Add sanity check */
@@ -74,7 +82,7 @@ CRGB oracle_utils_read_color(const char *payload, unsigned int length)
   }
 
   color = CRGB(color_array[0], color_array[1], color_array[2]);
-  
+
   Serial.print("Color: ");
   Serial.print(color.r);
   Serial.print(".");
