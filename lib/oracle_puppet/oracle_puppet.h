@@ -47,9 +47,8 @@
 #define ORACLE_PUPPET_SERVO8_MAX_ANGLE  ALICE_PAPILLON_CONFIG_SERVO8_MAX_ANGLE
 #define ORACLE_PUPPET_SERVO8_GPIO_PIN   ALICE_PAPILLON_CONFIG_SERVO8_PIN
 
-
 #define ORACLE_PUPPET_NUM_BATCHS 4
-#define ORACLE_PUPPET_NUM_FRAMES 96
+#define ORACLE_PUPPET_NUM_FRAMES 256
 
 typedef struct oracle_puppet_config_s {
     uint8_t *gpio_motors;
@@ -57,28 +56,37 @@ typedef struct oracle_puppet_config_s {
     uint8_t num_gpios;
 } oracle_puppet_config_t;
 
+typedef struct oracle_puppet_frame_s {
+    char buffer[ORACLE_PUPPET_NUM_FRAMES];
+    uint8_t index;
+    bool in_use;
+} oracle_puppet_frame_t;
+
 typedef struct oracle_puppet_frames_s {
-    int num_batchs;
-    int batch_index;
-    int num_frames;
-    int frame_index;
-    uint32_t **frame_positions;
-    uint32_t *frame_delay;
-    bool *frame_status;
+    oracle_puppet_frame_t frames[ORACLE_PUPPET_NUM_BATCHS];
+    uint8_t running_index;
+    uint8_t upload_index;
 } oracle_puppet_frames_t;
+
+typedef struct oracle_puppet_config_servo_s {
+    uint16_t angle_min;
+    uint16_t angle_ini;
+    uint16_t angle_max;
+    uint16_t gpio_pin;
+} struct oracle_puppet_config_servo_t;
+
+typedef struct oracle_pupper_state_servo_s {
+    uint16_t angle;
+    uint8_t is_running;
+    uint8_t pad0;
+} oracle_pupper_state_servo_t;
 
 typedef struct oracle_puppet_context_s {
     /* servo */
-    int angle_min;
-    int angle_ini;
-    int angle_max;
-    int gpio_pin;
-    int index;
-    oracle_puppet_frames_t *frames;
-    bool is_running;
-    bool enable;
+    uint16_t index;
+    uint8_t enable;
+    uint8_t pad0;
+    oracle_puppet_config_servo_t *config;
 } oracle_puppet_context_t;
-
-
 
 #endif /* #ifndef __include_oracle_puppet_h */
