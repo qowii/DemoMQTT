@@ -33,8 +33,9 @@ static bool oracle_screen_mqtt_set_state(const char *topic, byte *payload, unsig
     uint8_t state;
     const char *expected_topic = "/esp32/screen/set/state";
 
-    if (strncmp(topic, expected_topic, strlen(expected_topic)))
+    if (strncmp(topic, expected_topic, strlen(expected_topic))) {
         return false;
+    }
 
     snprintf(buffer, sizeof(buffer), "%s", (char *) payload);
 
@@ -59,12 +60,13 @@ static bool oracle_screen_mqtt_set_state(const char *topic, byte *payload, unsig
 
 static bool oracle_screen_mqtt_set_enable(const char *topic, byte *payload, unsigned int length)
 {
-    const char *expected_topic = "/esp32/screen/set/enable"
+    const char *expected_topic = "/esp32/screen/set/enable";
 
-    if (strncmp(topic, expected_topic, strlen(expected_topic)))
+    if (strncmp(topic, expected_topic, strlen(expected_topic))) {
         return false;
+    }
 
-    oracle_screen_mqtt_enable = oracle_utils_read_bool(payload, length);
+    oracle_screen_mqtt_enable = oracle_utils_read_bool((char *) payload, length);
     oracle_screen_mqtt_publish_enable(oracle_screen_mqtt_enable);
 
     return true;
