@@ -56,6 +56,8 @@ static bool oracle_screen_mqtt_set_state(const char *topic, byte *payload, unsig
     }
 
     oracle_screen_mqtt_publish_state(state);
+
+    return true;
 }
 
 static bool oracle_screen_mqtt_set_enable(const char *topic, byte *payload, unsigned int length)
@@ -90,7 +92,7 @@ bool oracle_screen_mqtt_callback(const char *topic, byte *payload, unsigned int 
 
 bool oracle_screen_mqtt_loop(void)
 {
-    oracle_screen_loop();
+    return oracle_screen_loop();
 }
 
 void oracle_screen_mqtt_subscribe(void)
