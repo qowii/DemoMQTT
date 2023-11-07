@@ -21,6 +21,7 @@
 #include <oracle_wifi.h>
 
 /* Component MQTT callback */
+#include <oracle_screen_mqtt.h>
 #include <oracle_hcsr04_mqtt.h>
 #include <oracle_leds_mqtt.h>
 #include <oracle_parfum.h>
