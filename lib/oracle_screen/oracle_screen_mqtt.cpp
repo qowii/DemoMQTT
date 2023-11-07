@@ -90,7 +90,7 @@ bool oracle_screen_mqtt_callback(const char *topic, byte *payload, unsigned int 
 
 bool oracle_screen_mqtt_loop(void)
 {
-    oracle_screen_loop();
+    return oracle_screen_loop();
 }
 
 void oracle_screen_mqtt_subscribe(void)
