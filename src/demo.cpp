@@ -27,6 +27,8 @@
 #include <oracle_rc522_mqtt.h>
 #include <oracle_utils_misc_mqtt.h>
 
+#include <oracle_puppets.h>
+
 /* Alice Libraries */
 #include <AliceDefaultConfig.h>
 #include <version.h>
