@@ -5,7 +5,7 @@
 
 oracle_hcsr04_context_t oracle_hcsr04_context;
 
-uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *ctx)
+static uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *ctx)
 {
     float avg, sum;
     int valid_measure;
@@ -45,7 +45,12 @@ uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *ctx)
     }
 
     avg = sum / (float) valid_measure;
-    ctx->distance = (avg > 0 && avg < ctx->max_distance) ? avg : UINT8_MAX;
+
+    if (avg > 0 && avg < ctx->max_distance) {
+        ctx->distance = avg;
+    } else {
+        ctx->distance = ORACLE_HCSR04_UNDEF_VALUE;
+    }
 
     return ctx->distance;
 }
@@ -54,6 +59,23 @@ uint8_t oracle_hcsr04_get_distance(void)
 {
     oracle_hcsr04_context_t *ctx = &oracle_hcsr04_context;
     return oracle_hcsr04_get_distance(ctx);
+}
+
+static uint8_t oracle_hcsr04_loop(oracle_hcsr04_context_t *ctx)
+{
+    if (!oracle_utils_loop_per_n_ms(ctx->timer, ctx->delay)) {
+        return ORACLE_HCSR04_SKIP_VALUE;
+    }
+
+    ctx->timer = millis();
+
+    return oracle_hcsr04_get_distance(ctx);
+}
+
+uint8_t oracle_hcsr04_loop(void)
+{
+    oracle_hcsr04_context_t *ctx = &oracle_hcsr04_context;
+    return oracle_hcsr04_loop(ctx);
 }
 
 void oracle_hcsr04_setup(oracle_hcsr04_config_t *config)

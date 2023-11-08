@@ -51,6 +51,12 @@ bool oracle_utils_read_bool(const char* payload, unsigned int length)
     return false;
 }
 
+bool oracle_utils_loop_per_n_ms(const unsigned long prev, const unsigned long delay)
+[
+  const unsigned long cur = millis();
+  return !!(cur < prev || cur - prev >= delay)
+]
+
 /*!
  * \brief Read color from MQTT payload
  *

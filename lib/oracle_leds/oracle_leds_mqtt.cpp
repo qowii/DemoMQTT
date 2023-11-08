@@ -67,7 +67,7 @@ static void oracle_leds_mqtt_publish_leds_brightness(uint8_t brightness)
  * @brief Change brightness of all leds
  * @param topic MQTT topic
  * @param payload MQTT payload
- * @param length MQTT payload length 
+ * @param length MQTT payload length
 */
 static bool oracle_leds_mqtt_set_leds_brightness(const char *topic, byte *payload, unsigned int length)
 {
@@ -138,10 +138,10 @@ static void oracle_leds_mqtt_publish_led_status(uint8_t led_index, bool status)
 static uint8_t oracle_leds_mqtt_get_led_index(const char *topic)
 {
   char *token;
-  char buffer[256]; 
+  char buffer[256];
   uint8_t token_index, led_index;
   const char *expected_tokens[] = {"esp32", "led", "", "set", "status"};
-  
+
   if (strlen(topic) > sizeof(buffer) - 1)
     return UINT8_MAX;
 
@@ -181,7 +181,7 @@ static bool oracle_leds_mqtt_set_led_status(const char *topic, byte *payload, un
 {
     bool status;
     uint8_t led_index;
-    
+
     led_index = oracle_leds_mqtt_get_led_index(topic);
     if (led_index == UINT8_MAX)
         return false;
@@ -278,7 +278,7 @@ bool oracle_leds_mqtt_loop(void)
   EVERY_N_MILLISECONDS(ORACLE_LEDS_MQTT_LOOP_DELAY) {
     return true;
   }
-  
+
   return true;
 }
 

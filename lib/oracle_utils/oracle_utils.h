@@ -17,7 +17,7 @@ uint16_t oracle_utils_read_uint16(const char *payload);
  * \param payload MQTT payload
  * \return uint64_t value
 */
-uint64_t oracle_utilsread_uint64(const char *payload)
+uint64_t oracle_utilsread_uint64(const char *payload);
 
 /*!
  * \brief Read integer from MQTT payload
@@ -27,7 +27,11 @@ uint64_t oracle_utilsread_uint64(const char *payload)
  * \return Integer value
 */
 uint8_t oracle_utils_read_integer(const char *payload, char **endptr);
+
+bool oracle_utils_loop_per_n_ms(const unsigned long prev, const unsigned long delay);
+
 bool oracle_utils_read_bool(const char *payload, unsigned int length);
+
 CRGB oracle_utils_read_color(const char *payload, unsigned int length);
 
 
