@@ -1,8 +1,6 @@
 #ifndef __oracle_utils_h
 #define __oracle_utils_h
 
-#include <FastLED.h>
-
 typedef struct oracle_utils_rbg_s {
     uint8_t red;
     uint8_t green;

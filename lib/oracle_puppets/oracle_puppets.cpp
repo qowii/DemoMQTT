@@ -53,7 +53,7 @@ static const int ORACLE_PUPPETS_PUPPET_gpio_pin[ORACLE_PUPPETS_NUM_PUPPETS] = {
 bool oracle_puppets_move_servo(const uint8_t index, const uint8_t angle)
 {
     oracle_puppets_context_t *ctx = &oracle_puppets_context;
-    oracle_puppets_puppet_context_t *puppet = &(ctx->puppets[i]);
+    oracle_puppets_puppet_context_t *puppet = &(ctx->puppets[index]);
 
     if (UINT8_MAX == angle) {
         return false;
@@ -65,8 +65,6 @@ bool oracle_puppets_move_servo(const uint8_t index, const uint8_t angle)
 
 void oracle_puppets_update_servo(oracle_puppets_puppet_context_t *puppet)
 {
-    char *ptr;
-    uint16_t frame_index;
     uint8_t angle, next_batch, running_index;
 
     if (!puppet->servos.enable) {
@@ -75,22 +73,26 @@ void oracle_puppets_update_servo(oracle_puppets_puppet_context_t *puppet)
 
     running_index = puppet->batchs.running_index;
     if (!puppet->batchs.frames[running_index].ready) {
-        continue;
-    }
-
-    ptr = puppet->batchs.frames.next_angle;
-    angle = oracle_utils_read_uint16(ptr);
-    frame_index = puppet->batchs.frame_index + 2;
-
-    if (oracle_puppets_move_servo(puppet->index, angle) &&
-        ORACLE_PUPPETS_NUM_FRAMES > frame_index) {
         return;
     }
 
-    next_batch = (running_index + 1) % ORACLE_PUPPETS_NUM_BATCHS;
+    angle = oracle_utils_read_uint16(puppet->batchs.next_angle);
+    puppet->batchs.frame_index += 2;
+
+    if (oracle_puppets_move_servo(puppet->index, angle) &&
+        ORACLE_PUPPETS_NUM_FRAMES > puppet->batchs.frame_index) {
+            puppet->batchs.next_angle += 2
+        return;
+    }
+
+    /* Clean current batch */
     puppet->batchs.frames[running_index].ready = false;
-    ptr = puppet->batchs.frames[next_batch].buffer;
-    puppet->batchs.frames.next_angle = ptr;
+
+    /* Prepare next batch */
+    next_batch = (running_index + 1) % ORACLE_PUPPETS_NUM_BATCHS;
+    puppet->batchs.running_index = next_batch;
+    puppet->batchs.frame_index = 0;
+    puppet->batchs.frames.next_angle = puppet->batchs.frames[next_batch].buffer;
 }
 
 
