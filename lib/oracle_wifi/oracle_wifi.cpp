@@ -8,6 +8,8 @@
 
 static oracle_timer_loop_context_t oracle_timer_context;
 
+static oracle_timer_loop_context_t oracle_timer_context;
+
 const char *AliceWiFiStatus2String(wl_status_t status) {
   switch (status) {
     case WL_NO_SHIELD: return "WL_NO_SHIELD";
