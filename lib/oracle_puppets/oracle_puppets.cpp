@@ -81,7 +81,7 @@ void oracle_puppets_update_servo(oracle_puppets_puppet_context_t *puppet)
 
     if (oracle_puppets_move_servo(puppet->index, angle) &&
         ORACLE_PUPPETS_NUM_FRAMES > puppet->batchs.frame_index) {
-            puppet->batchs.next_angle += 2
+            puppet->batchs.next_angle += 2;
         return;
     }
 
