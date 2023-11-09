@@ -5,7 +5,6 @@
 #include <oracle_timer.h>
 #include <oracle_wifi.h>
 
-
 static oracle_timer_loop_context_t oracle_timer_context;
 
 const char *AliceWiFiStatus2String(wl_status_t status) {
