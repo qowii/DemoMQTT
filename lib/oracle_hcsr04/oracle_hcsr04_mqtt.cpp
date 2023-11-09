@@ -20,7 +20,7 @@ bool oracle_hcsr04_mqtt_loop(void)
 
     distance = oracle_hcsr04_loop();
     if ( ORACLE_HCSR04_SKIP_VALUE != distance) {
-        oracle_hcsr04_mqtt_publish_distance(distance)
+        oracle_hcsr04_mqtt_publish_distance(distance);
     }
 
     return true;
