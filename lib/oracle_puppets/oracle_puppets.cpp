@@ -6,7 +6,7 @@
 
 static oracle_puppets_context_t oracle_puppets_context;
 
-static const int ORACLE_PUPPETS_PUPPET_init_angle[ORACLE_PUPPETS_NUM_PUPPETS] = {
+static const int ORACLE_PUPPETS_PUPPET_INIT_ANGLE[ORACLE_PUPPETS_NUM_PUPPETS] = {
     ORACLE_PUPPETS_PUPPET1_INIT_ANGLE,
     ORACLE_PUPPETS_PUPPET2_INIT_ANGLE,
     ORACLE_PUPPETS_PUPPET3_INIT_ANGLE,
@@ -17,7 +17,7 @@ static const int ORACLE_PUPPETS_PUPPET_init_angle[ORACLE_PUPPETS_NUM_PUPPETS] = 
     ORACLE_PUPPETS_PUPPET8_INIT_ANGLE
 };
 
-static const int ORACLE_PUPPETS_PUPPET_min_angle[ORACLE_PUPPETS_NUM_PUPPETS] = {
+static const int ORACLE_PUPPETS_PUPPET_MIN_ANGLE[ORACLE_PUPPETS_NUM_PUPPETS] = {
     ORACLE_PUPPETS_PUPPET1_MIN_ANGLE,
     ORACLE_PUPPETS_PUPPET2_MIN_ANGLE,
     ORACLE_PUPPETS_PUPPET3_MIN_ANGLE,
@@ -28,7 +28,7 @@ static const int ORACLE_PUPPETS_PUPPET_min_angle[ORACLE_PUPPETS_NUM_PUPPETS] = {
     ORACLE_PUPPETS_PUPPET8_MIN_ANGLE
 };
 
-static const int ORACLE_PUPPETS_PUPPET_max_angle[ORACLE_PUPPETS_NUM_PUPPETS] = {
+static const int ORACLE_PUPPETS_PUPPET_MAX_ANGLE[ORACLE_PUPPETS_NUM_PUPPETS] = {
     ORACLE_PUPPETS_PUPPET1_MAX_ANGLE,
     ORACLE_PUPPETS_PUPPET2_MAX_ANGLE,
     ORACLE_PUPPETS_PUPPET3_MAX_ANGLE,
@@ -39,7 +39,7 @@ static const int ORACLE_PUPPETS_PUPPET_max_angle[ORACLE_PUPPETS_NUM_PUPPETS] = {
     ORACLE_PUPPETS_PUPPET8_MAX_ANGLE
 };
 
-static const int ORACLE_PUPPETS_PUPPET_gpio_pin[ORACLE_PUPPETS_NUM_PUPPETS] = {
+static const int ORACLE_PUPPETS_PUPPET_GPIO_ANGLE[ORACLE_PUPPETS_NUM_PUPPETS] = {
     ORACLE_PUPPETS_PUPPET1_GPIO_PIN,
     ORACLE_PUPPETS_PUPPET2_GPIO_PIN,
     ORACLE_PUPPETS_PUPPET3_GPIO_PIN,
@@ -92,7 +92,7 @@ void oracle_puppets_update_servo(oracle_puppets_puppet_context_t *puppet)
     next_batch = (running_index + 1) % ORACLE_PUPPETS_NUM_BATCHS;
     puppet->batchs.running_index = next_batch;
     puppet->batchs.frame_index = 0;
-    puppet->batchs.frames.next_angle = puppet->batchs.frames[next_batch].buffer;
+    puppet->batchs.next_angle = puppet->batchs.frames[next_batch].buffer;
 }
 
 
