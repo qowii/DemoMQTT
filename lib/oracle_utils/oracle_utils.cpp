@@ -6,7 +6,8 @@
 */
 
 #include <Arduino.h>
-#include <FastLED.h>
+
+/* oracle libraries */
 #include "oracle_utils.h"
 
 uint16_t oracle_utils_read_uint16(const char *payload)

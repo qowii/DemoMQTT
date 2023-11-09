@@ -1,8 +1,9 @@
-#include <FastLED.h>
 #include <uptime_formatter.h>
 
 #include <oracle_mqtt.h>
 #include <oracle_utils_misc_mqtt.h>
+
+static oracle_timer_loop_context_t oracle_timer_context;
 
 static void oracle_utils_misc_mqtt_uptime(void)
 {
@@ -19,8 +20,18 @@ static void oracle_utils_misc_mqtt_esp32_type(void)
 
 void oracle_utils_misc_mqtt_loop(void)
 {
-    EVERY_N_SECONDS(ORACLE_UTILS_MISC_MQTT_UPTIME_DELAY) {
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
+
+    if (!oracle_timer_loop_ready(timer_loop_ctx)) {
         oracle_utils_misc_mqtt_uptime();
         oracle_utils_misc_mqtt_esp32_type();
     }
+}
+
+void oracle_utils_misc_mqtt_setup(void)
+{
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
+
+    oracle_timer_loop_setup(timer_loop_ctx);
+
 }

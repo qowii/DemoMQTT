@@ -8,5 +8,6 @@
  * @brief MQTT uptime loop
 */
 void oracle_utils_misc_mqtt_loop(void);
+void oracle_utils_misc_mqtt_setup(void);
 
 #endif /* #ifndef __include_oracle_utils_misc_mqtt_h */

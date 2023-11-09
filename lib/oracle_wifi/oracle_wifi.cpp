@@ -1,9 +1,10 @@
 #include <Arduino.h>
-#include <FastLED.h>
 #include <WiFi.h>
 
 #include <oracle_wifi.h>
 #include <oracle_leds.h>
+
+static oracle_timer_loop_context_t oracle_timer_context;
 
 const char *AliceWiFiStatus2String(wl_status_t status) {
   switch (status) {
@@ -84,21 +85,24 @@ static void oracle_wifi_WiFiStationDisconnected_cb(WiFiEvent_t event, WiFiEventI
 
 void oracle_wifi_setup(void)
 {
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
     const char *ssid = ORACLE_RFID_WIFI_SSID;
     const char *password = ORACLE_RFID_WIFI_PWD;
-    
+
+    oracle_timer_loop_setup(timer_loop_ctx);
+
     /* Turn on Wifi */
     Serial.println("Starting Alice WiFi");
     Serial.println();
 
     WiFi.mode(WIFI_STA);
-    
+
     WiFi.onEvent(oracle_wifi_WiFiStationConnected_cb, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_CONNECTED);
     WiFi.onEvent(oracle_wifi_WiFiStationDisconnected_cb, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_DISCONNECTED);
     WiFi.onEvent(oracle_wifi_WiFiGotIP_cb, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_GOT_IP);
 
     WiFi.begin(ssid, password);
-        
+
     Serial.println();
     Serial.println("Wait for WiFi... ");
 }
@@ -118,11 +122,13 @@ void oracle_wifi_dump_infos(void)
 
 bool oracle_wifi_loop(void)
 {
-  EVERY_N_MILLISECONDS(ORACLE_WIFI_LOOP_DELAY) {
-    if (!oracle_wifi_check_status()) {
-        oracle_leds_set_leds_color(CRGB::Red);
-        return false;
-    }
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
+
+    if (!oracle_timer_loop_ready(timer_loop_ctx)) {
+        if (!oracle_wifi_check_status()) {
+            oracle_leds_set_leds_color(CRGB::Red);
+            return false;
+        }
   }
 
   return true;
