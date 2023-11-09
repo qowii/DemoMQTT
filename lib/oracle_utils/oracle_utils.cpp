@@ -17,7 +17,7 @@ uint16_t oracle_utils_read_uint16(const char *payload)
 
 uint64_t oracle_utilsread_uint64(const char *payload)
 {
-  uint16_t value = 0
+  uint16_t value = 0;
   for (int i = 0; i < 8; i++) {
     value |= (uint16_t) payload[i] << (i * 8);
   }

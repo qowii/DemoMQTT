@@ -2,10 +2,13 @@
 #include <Arduino.h>
 
 #include <oracle_hcsr04.h>
+#include <oracle_timer.h>
 
-oracle_hcsr04_context_t oracle_hcsr04_context;
 
-static uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *ctx)
+static oracle_hcsr04_context_t oracle_hcsr04_context;
+static oracle_timer_loop_context_t oracle_hcsr04_timer_context;
+
+static uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *hcsr04_ctx)
 {
     float avg, sum;
     int valid_measure;
@@ -14,17 +17,17 @@ static uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *ctx)
     sum = 0.0;
     valid_measure = 0;
 
-    for (int i = 0; i < ctx->num_repeats; i++)
+    for (int i = 0; i < hcsr04_ctx->num_repeats; i++)
     {
         unsigned long start_timer, end_timer;
 
         start_timer = millis();
-        digitalWrite(ctx->gpio_trigger, LOW);
+        digitalWrite(hcsr04_ctx->gpio_trigger, LOW);
         delayMicroseconds(2);
-        digitalWrite(ctx->gpio_trigger, HIGH);
-        delayMicroseconds(ctx->pulse_delay);
-        digitalWrite(ctx->gpio_trigger, LOW);
-        const long ultrason_duration = pulseIn(ctx->gpio_echo , HIGH);
+        digitalWrite(hcsr04_ctx->gpio_trigger, HIGH);
+        delayMicroseconds(hcsr04_ctx->pulse_delay);
+        digitalWrite(hcsr04_ctx->gpio_trigger, LOW);
+        const long ultrason_duration = pulseIn(hcsr04_ctx->gpio_echo , HIGH);
         end_timer = millis();
 
         if (!once) {
@@ -37,66 +40,69 @@ static uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *ctx)
             once = true;
         }
 
-        if (ultrason_duration > 0 && ultrason_duration < ctx->max_value)
+        if (ultrason_duration > 0 && ultrason_duration < hcsr04_ctx->max_value)
         {
-            sum += ultrason_duration / ctx->speed_sound / 2;
+            sum += ultrason_duration / hcsr04_ctx->speed_sound / 2;
             valid_measure++;
         }
     }
 
     avg = sum / (float) valid_measure;
 
-    if (avg > 0 && avg < ctx->max_distance) {
-        ctx->distance = avg;
+    if (avg > 0 && avg < hcsr04_ctx->max_distance) {
+        hcsr04_ctx->distance = avg;
     } else {
-        ctx->distance = ORACLE_HCSR04_UNDEF_VALUE;
+        hcsr04_ctx->distance = ORACLE_HCSR04_UNDEF_VALUE;
     }
 
-    return ctx->distance;
+    return hcsr04_ctx->distance;
 }
 
 uint8_t oracle_hcsr04_get_distance(void)
 {
-    oracle_hcsr04_context_t *ctx = &oracle_hcsr04_context;
-    return oracle_hcsr04_get_distance(ctx);
+    oracle_hcsr04_context_t *hcsr04_ctx = &oracle_hcsr04_context;
+    return oracle_hcsr04_get_distance(hcsr04_ctx);
 }
 
-static uint8_t oracle_hcsr04_loop(oracle_hcsr04_context_t *ctx)
+static uint8_t oracle_hcsr04_loop(oracle_hcsr04_context_t *hcsr04_ctx)
 {
-    if (!oracle_utils_loop_per_n_ms(ctx->timer, ctx->delay)) {
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_hcsr04_timer_context;
+
+    if (!oracle_timer_loop_ready(timer_loop_ctx)) {
         return ORACLE_HCSR04_SKIP_VALUE;
     }
 
-    ctx->timer = millis();
-
-    return oracle_hcsr04_get_distance(ctx);
+    return oracle_hcsr04_get_distance(hcsr04_ctx);
 }
 
 uint8_t oracle_hcsr04_loop(void)
 {
-    oracle_hcsr04_context_t *ctx = &oracle_hcsr04_context;
-    return oracle_hcsr04_loop(ctx);
+    oracle_hcsr04_context_t *hcsr04_ctx = &oracle_hcsr04_context;
+    return oracle_hcsr04_loop(hcsr04_ctx);
 }
 
 void oracle_hcsr04_setup(oracle_hcsr04_config_t *config)
 {
     /* Only one context per esp32 in this version */
-    oracle_hcsr04_context_t *ctx = &oracle_hcsr04_context;
+    oracle_hcsr04_context_t *hcsr04_ctx = &oracle_hcsr04_context;
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_hcsr04_timer_context;
 
-    ctx->gpio_trigger = config->gpio_trigger;
-    ctx->gpio_echo = config->gpio_echo;
-    ctx->num_repeats = config->num_repeats;
-    ctx->pulse_delay = config->pulse_delay;
-    ctx->max_value = config->max_value;
-    ctx->max_distance = config->max_distance;
-    ctx->speed_sound = config->speed_sound;
-    ctx->distance = UINT8_MAX;
+    oracle_timer_loop_setup(timer_loop_ctx);
+
+    hcsr04_ctx->gpio_trigger = config->gpio_trigger;
+    hcsr04_ctx->gpio_echo = config->gpio_echo;
+    hcsr04_ctx->num_repeats = config->num_repeats;
+    hcsr04_ctx->pulse_delay = config->pulse_delay;
+    hcsr04_ctx->max_value = config->max_value;
+    hcsr04_ctx->max_distance = config->max_distance;
+    hcsr04_ctx->speed_sound = config->speed_sound;
+    hcsr04_ctx->distance = UINT8_MAX;
 
     /* La broche TRIGGER doit être à LOW au repos */
-    pinMode(ctx->gpio_trigger, OUTPUT);
-    digitalWrite(ctx->gpio_trigger, LOW);
+    pinMode(hcsr04_ctx->gpio_trigger, OUTPUT);
+    digitalWrite(hcsr04_ctx->gpio_trigger, LOW);
 
-    pinMode(ctx->gpio_echo, INPUT);
+    pinMode(hcsr04_ctx->gpio_echo, INPUT);
 }
 
 void oracle_hcsr04_setup(void)
