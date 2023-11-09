@@ -9,7 +9,7 @@ static unsigned long oracle_timer_loop_get_time(void)
 
 void oracle_timer_loop_reset(oracle_timer_loop_context_t *timer)
 {
-    timer->prev_timer = oracle_timer_loop_get_time()
+    timer->prev_timer = oracle_timer_loop_get_time();
 }
 
 void oracle_timer_loop_trigger(oracle_timer_loop_context_t *timer)
@@ -20,7 +20,7 @@ void oracle_timer_loop_trigger(oracle_timer_loop_context_t *timer)
 
 bool oracle_timer_loop_ready(oracle_timer_loop_context_t *timer)
 {
-    const unsigned long current = oracle_timer_loop_get_time()
+    const unsigned long current = oracle_timer_loop_get_time();
     const unsigned long previous = timer->prev_timer;
 
     if ((current < previous) || (current - previous >= timer->period)) {

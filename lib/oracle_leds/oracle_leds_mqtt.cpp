@@ -98,7 +98,9 @@ static bool oracle_leds_mqtt_set_leds_brightness(const char *topic, byte *payloa
  */
 static bool oracle_leds_mqtt_set_leds_color(const char *topic, byte *payload, unsigned int length)
 {
-  CRGB color;
+  CRGB color = CRGB::Black;
+  oracle_utils_rbg_t raw_color;
+
   const char *expected_topic = "/esp32/leds/set/color";
 
   if (strncmp(topic, expected_topic, strlen(expected_topic)))
@@ -107,7 +109,10 @@ static bool oracle_leds_mqtt_set_leds_color(const char *topic, byte *payload, un
   if (length < 6)
     return false;
 
-  color = oracle_utils_read_color((char *) payload, length);
+  if (oracle_utils_read_color((char *) payload, length, &raw_color)) {
+    color = CRGB(raw_color.red, raw_color.green, raw_color.blue);
+  }
+
   oracle_leds_set_leds_color(color);
 
   return true;

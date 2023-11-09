@@ -3,6 +3,13 @@
 
 #include <FastLED.h>
 
+typedef struct oracle_utils_rbg_s {
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+    uint8_t pad0;
+} oracle_utils_rbg_t;
+
 /*!
  * \brief Read uint16_t from MQTT payload
  *
@@ -32,7 +39,6 @@ bool oracle_utils_loop_per_n_ms(const unsigned long prev, const unsigned long de
 
 bool oracle_utils_read_bool(const char *payload, unsigned int length);
 
-CRGB oracle_utils_read_color(const char *payload, unsigned int length);
-
+bool oracle_utils_read_color(const char *payload, unsigned int length, oracle_utils_rbg_t *color);
 
 #endif /* #ifndef __oracle_utils_h */

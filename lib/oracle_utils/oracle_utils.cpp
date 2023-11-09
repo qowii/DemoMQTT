@@ -64,16 +64,15 @@ bool oracle_utils_loop_per_n_ms(const unsigned long prev, const unsigned long de
  * \param length MQTT payload length
  * \return CRGB color
 */
-CRGB oracle_utils_read_color(const char *payload, unsigned int length)
+bool oracle_utils_read_color(const char *payload, unsigned int length, oracle_utils_rbg_t *color)
 {
-  CRGB color;
   char *endptr;
   char buffer[256];
   uint8_t color_array[3];
   uint8_t color_index = 0;
 
   if (length < 6 || length > sizeof(buffer) - 1)
-    return CRGB::Black;
+    return false;
 
   snprintf(buffer, length + 1, "%s", payload);
 
@@ -87,14 +86,9 @@ CRGB oracle_utils_read_color(const char *payload, unsigned int length)
     color_index++;
   }
 
-  color = CRGB(color_array[0], color_array[1], color_array[2]);
+  color->red = color_array[0];
+  color->green = color_array[1];
+  color->blue = color_array[2];
 
-  Serial.print("Color: ");
-  Serial.print(color.r);
-  Serial.print(".");
-  Serial.print(color.g);
-  Serial.print(".");
-  Serial.println(color.b);
-
-  return color;
+  return true;
 }
