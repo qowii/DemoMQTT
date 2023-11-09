@@ -1,9 +1,10 @@
 #include <Arduino.h>
-#include <FastLED.h>
 
 #include <oracle_screen.h>
+#include <oracle_timer.h>
 
-oracle_screen_context_t oracle_screen_context;
+static oracle_screen_context_t oracle_screen_context;
+static oracle_timer_loop_context_t oracle_timer_context;
 
 static void oracle_screen_open(oracle_screen_context_t *ctx)
 {
@@ -131,7 +132,9 @@ static bool oracle_screen_update(void)
 
 static uint8_t oracle_screen_loop(oracle_screen_context_t *ctx)
 {
-    EVERY_N_MILLISECONDS(ORACLE_SCREEN_LOOP_DELAY) {
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
+
+    if (!oracle_timer_loop_ready(timer_loop_ctx)) {
         return oracle_screen_update(ctx);
     }
 
@@ -147,6 +150,9 @@ uint8_t oracle_screen_loop(void)
 void oracle_screen_setup(oracle_screen_config_t *config)
 {
     oracle_screen_context_t *ctx = &oracle_screen_context;
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
+
+    oracle_timer_loop_setup(timer_loop_ctx);
 
     ctx->rpwm_output = config->rpwm_output;
     ctx->lpwm_output = config->lpwm_output;

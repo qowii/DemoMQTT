@@ -1,11 +1,13 @@
 
 #include <Arduino.h>
-#include <FastLED.h>
 
+/* oracle libraries */
 #include <oracle_mqtt.h>
-
+#include <oracle_timer.h>
 #include <oracle_wifi.h>
 #include <oracle_wifi_mqtt.h>
+
+static oracle_timer_loop_context_t oracle_timer_context;
 
 static void oracle_wifi_mqtt_publish_hostname(void)
 {
@@ -30,7 +32,9 @@ static void oracle_wifi_mqtt_publish_ip_address(void)
 
 void oracle_wifi_mqtt_loop(void)
 {
-    EVERY_N_SECONDS(ORACLE_WIFI_MQTT_LOOP_DELAY) {
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
+
+    if (!oracle_timer_loop_ready(timer_loop_ctx)) {
         oracle_wifi_mqtt_publish_hostname();
         oracle_wifi_mqtt_publish_mac_address();
         oracle_wifi_mqtt_publish_ip_address();
@@ -44,6 +48,9 @@ void oracle_wifi_mqtt_subscribe(const char *topic)
 
 void oracle_wifi_mqtt_setup(void)
 {
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
+
+    oracle_timer_loop_setup(timer_loop_ctx);
     oracle_wifi_setup();
 }
 

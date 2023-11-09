@@ -4,7 +4,6 @@
 #include <oracle_hcsr04.h>
 #include <oracle_timer.h>
 
-
 static oracle_hcsr04_context_t oracle_hcsr04_context;
 static oracle_timer_loop_context_t oracle_timer_context;
 
