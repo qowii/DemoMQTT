@@ -1,13 +1,15 @@
-#include <FastLED.h>
+#include <Arduino.h>
 #include <PubSubClient.h> //Librairie pour la gestion Mqtt
 #include <WiFi.h>
 
 #include <oracle_mqtt.h>
 #include <oracle_leds_mqtt.h>
+#include <oracle_timer.h>
 
 WiFiClient wlanclient;
 static oracle_mqtt_callback_t oracle_mqtt_callback = NULL;
 static PubSubClient oracle_mqtt_client(wlanclient);
+static oracle_timer_loop_context_t oracle_timer_context;
 
 static void _oracle_mqtt_callback(char* topic, byte *payload, unsigned int length)
 {
@@ -74,7 +76,7 @@ void oracle_mqtt_reconnect(void)
       Serial.println(oracle_mqtt_client.state());
       return;
     }
-    
+
     oracle_mqtt_misc_subscribe();
     oracle_leds_mqtt_subscribe();
 }
@@ -86,15 +88,22 @@ void oracle_mqtt_set_callback(oracle_mqtt_callback_t callback)
 
 bool oracle_mqtt_loop(void)
 {
-    EVERY_N_MILLISECONDS(ORACLE_MQTT_LOOP_DELAY) {
-        oracle_mqtt_client.loop();
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
+
+    if (!oracle_timer_loop_ready(timer_loop_ctx)) {
+        return false;
     }
 
+    oracle_mqtt_client.loop();
     return true;
 }
 
 void oracle_mqtt_setup(oracle_mqtt_config_t *config)
 {
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
+
+    oracle_timer_loop_setup(timer_loop_ctx);
+
     oracle_mqtt_client.setServer(config->mqtt_server, config->mqtt_port);
     oracle_mqtt_client.setCallback(_oracle_mqtt_callback);
 }

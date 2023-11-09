@@ -6,7 +6,7 @@
 
 
 static oracle_hcsr04_context_t oracle_hcsr04_context;
-static oracle_timer_loop_context_t oracle_hcsr04_timer_context;
+static oracle_timer_loop_context_t oracle_timer_context;
 
 static uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *hcsr04_ctx)
 {
