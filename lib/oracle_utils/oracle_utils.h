@@ -35,8 +35,6 @@ uint64_t oracle_utilsread_uint64(const char *payload);
 */
 uint8_t oracle_utils_read_integer(const char *payload, char **endptr);
 
-bool oracle_utils_loop_per_n_ms(const unsigned long prev, const unsigned long delay);
-
 bool oracle_utils_read_bool(const char *payload, unsigned int length);
 
 bool oracle_utils_read_color(const char *payload, unsigned int length, oracle_utils_rbg_t *color);
