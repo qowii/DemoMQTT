@@ -6,8 +6,12 @@
  * @note Created by Antoine CAPRA
  */
 
+#include <Arduino.h>
+
+/* oracle libraries */
 #include <oracle_leds.h>
 #include <oracle_mqtt.h>
+#include <oracle_timer.h>
 #include <oracle_utils.h>
 #include <oracle_leds_mqtt.h>
 
