@@ -1,13 +1,17 @@
 #include <Arduino.h>
-#include <FastLED.h>
 
 #include <oracle_parfum.h>
+#include <oracle_timer.h>
 
 oracle_parfum_context_t oracle_parfum_context;
+static oracle_timer_loop_context_t oracle_timer_context;
 
 void oracle_parfum_setup(oracle_parfum_config_t *config)
 {
     oracle_parfum_context_t *ctx = &oracle_parfum_context;
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
+
+    oracle_timer_loop_setup(timer_loop_ctx);
 
     pinMode(config->gpio_pin, OUTPUT);
     digitalWrite(config->gpio_pin, LOW);
@@ -86,7 +90,9 @@ static bool oracle_parfum_check_timer(void)
 
 bool oracle_parfum_loop(void)
 {
-    EVERY_N_MILLISECONDS(ORACLE_PARFUM_LOOP_DELAY) {
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
+
+    if (!oracle_timer_loop_ready(timer_loop_ctx)) {
         return oracle_parfum_check_timer();
     }
 

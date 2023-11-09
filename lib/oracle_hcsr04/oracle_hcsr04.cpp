@@ -6,7 +6,7 @@
 
 
 static oracle_hcsr04_context_t oracle_hcsr04_context;
-static oracle_timer_loop_context_t oracle_hcsr04_timer_context;
+static oracle_timer_loop_context_t oracle_timer_context;
 
 static uint8_t oracle_hcsr04_get_distance(oracle_hcsr04_context_t *hcsr04_ctx)
 {
@@ -66,7 +66,7 @@ uint8_t oracle_hcsr04_get_distance(void)
 
 static uint8_t oracle_hcsr04_loop(oracle_hcsr04_context_t *hcsr04_ctx)
 {
-    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_hcsr04_timer_context;
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
 
     if (!oracle_timer_loop_ready(timer_loop_ctx)) {
         return ORACLE_HCSR04_SKIP_VALUE;
@@ -85,7 +85,7 @@ void oracle_hcsr04_setup(oracle_hcsr04_config_t *config)
 {
     /* Only one context per esp32 in this version */
     oracle_hcsr04_context_t *hcsr04_ctx = &oracle_hcsr04_context;
-    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_hcsr04_timer_context;
+    oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
 
     oracle_timer_loop_setup(timer_loop_ctx);
 
