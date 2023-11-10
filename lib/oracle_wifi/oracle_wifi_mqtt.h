@@ -2,9 +2,9 @@
 #define __include_oracle_wifi_mqtt_h
 
 #include <Arduino.h>
-#include <AliceDefaultConfig.h>
+#include <oracle_config_default.h>
 
-#define ORACLE_WIFI_MQTT_LOOP_DELAY  ALICE_ESP32_CONFIG_DELAY
+#define ORACLE_WIFI_MQTT_LOOP_DELAY  ORACLE_ESP32_CONFIG_DELAY
 
 void oracle_wifi_mqtt_loop(void);
 void oracle_wifi_mqtt_setup(void);

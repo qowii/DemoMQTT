@@ -1,9 +1,9 @@
 #ifndef __include_oracle_timer
 #define __include_oracle_timer
 
-#include <AliceDefaultConfig.h>
+#include <oracle_config_default.h>
 
-#define ORACLE_TIMER_LOOP_DELAY ALICE_ESP32_CONFIG_DELAY
+#define ORACLE_TIMER_LOOP_DELAY ORACLE_ESP32_CONFIG_DELAY
 
 #define ORACLE_TIMER_LOOP_CONFIG_DEFAULT() {\
     .period = ORACLE_TIMER_LOOP_DELAY\

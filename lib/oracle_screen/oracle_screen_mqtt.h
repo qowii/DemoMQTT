@@ -3,10 +3,10 @@
 
 #include <Arduino.h>
 
-#include <AliceDefaultConfig.h>
+#include <oracle_config_default.h>
 #include <oracle_screen.h>
 
-#define ORACLE_SCREEN_MQTT_LOOP_DELAY ALICE_ESP32_CONFIG_DELAY
+#define ORACLE_SCREEN_MQTT_LOOP_DELAY ORACLE_ESP32_CONFIG_DELAY
 
 typedef enum oracle_screen_action_e {
     ORACLE_SCREEN_ACTION_OPEN,

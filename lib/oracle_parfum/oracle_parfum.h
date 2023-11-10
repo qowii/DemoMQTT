@@ -1,11 +1,11 @@
 #ifndef __include_oracle_parfum_h
 #define __include_oracle_parfum_h
 
-#include <AliceDefaultConfig.h>
+#include <oracle_config_default.h>
 
-#define ORACLE_PARFUM_PIN           ALICE_PARFUM_CONFIG_PIN
-#define ORACLE_PARFUM_MAX_TIME      ALICE_PARFUM_CONFIG_MAX_TIME
-#define ORACLE_PARFUM_LOOP_DELAY    ALICE_ESP32_CONFIG_DELAY
+#define ORACLE_PARFUM_PIN           ORACLE_PARFUM_CONFIG_PIN
+#define ORACLE_PARFUM_MAX_TIME      ORACLE_PARFUM_CONFIG_MAX_TIME
+#define ORACLE_PARFUM_LOOP_DELAY    ORACLE_ESP32_CONFIG_DELAY
 
 #define ORACLE_PARFUM_CONFIG_DEFAULT() {\
     .gpio_pin = ORACLE_PARFUM_PIN,\

@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-#include <AliceDefaultConfig.h>
+#include <oracle_config_default.h>
 
 #define ORACLE_SCREEN_RPWN_OUTPUT 32
 #define ORACLE_SCREEN_LPWN_OUTPUT 33
@@ -12,7 +12,7 @@
 #define ORACLE_SCREEN_FIN_DE_COURSE_OPEN 14
 #define ORACLE_SCREEN_FIN_DE_COURSE_CLOSED 27
 
-#define ORACLE_SCREEN_LOOP_DELAY ALICE_ESP32_CONFIG_DELAY
+#define ORACLE_SCREEN_LOOP_DELAY ORACLE_ESP32_CONFIG_DELAY
 
 #define ORACLE_SCREEN_CONFIG_DEFAULT() {\
     .rpwm_output = ORACLE_SCREEN_RPWN_OUTPUT,\

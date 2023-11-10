@@ -2,11 +2,11 @@
 #define __include_oracle_mqtt_h
 
 #include <Arduino.h>
-#include <AliceDefaultConfig.h>
+#include <oracle_config_default.h>
 
 #define ORACLE_MQTT_DEFAULT_PORT 1883
 #define ORACLE_MQTT_DEFAULT_SERVER "192.168.1.140"
-#define ORACLE_MQTT_LOOP_DELAY ALICE_ESP32_CONFIG_DELAY
+#define ORACLE_MQTT_LOOP_DELAY ORACLE_ESP32_CONFIG_DELAY
 
 #define ORACLE_MQTT_CONFIG_DEFAULT() {\
     .mqtt_server = ORACLE_MQTT_DEFAULT_SERVER,\

@@ -38,7 +38,5 @@ void oracle_utils_misc_mqtt_subscribe(void)
 void oracle_utils_misc_mqtt_setup(void)
 {
     oracle_timer_loop_context_t *timer_loop_ctx = &oracle_timer_context;
-
     oracle_timer_loop_setup(timer_loop_ctx);
-
 }

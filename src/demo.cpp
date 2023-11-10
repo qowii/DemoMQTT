@@ -30,7 +30,7 @@
 #include <oracle_puppets.h>
 
 /* Alice Libraries */
-#include <AliceDefaultConfig.h>
+#include <oracle_config_default.h>
 #include <version.h>
 
 static const char *_alice_model_type = "RFID";
